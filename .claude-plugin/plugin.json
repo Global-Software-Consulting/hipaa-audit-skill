@@ -1,0 +1,29 @@
+{
+  "name": "hipaa-audit",
+  "version": "0.1.0",
+  "description": "HIPAA compliance audit for any web/mobile/backend project. Scans codebase, infra config, dependencies, and vendor list against the HIPAA Security Rule (administrative/physical/technical safeguards), Privacy Rule, Breach Notification Rule, and Safe Harbor de-identification. Emits a scored report (Not Compliant / Partially Compliant / Compliant), with severity-tagged findings, evidence, and remediation hints. Every rule cites HHS / NIST 800-66 / OCR audit protocol.",
+  "keywords": [
+    "hipaa",
+    "compliance",
+    "phi",
+    "security-audit",
+    "healthcare",
+    "audit",
+    "safe-harbor",
+    "de-identification",
+    "baa",
+    "phi-leak",
+    "encryption",
+    "audit-logs",
+    "ocr",
+    "nist-800-66",
+    "hitrust",
+    "security-rule",
+    "privacy-rule",
+    "breach-notification",
+    "claude-skill",
+    "claude-code"
+  ],
+  "license": "MIT",
+  "author": "gsoft"
+}

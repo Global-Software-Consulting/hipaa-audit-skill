@@ -1,0 +1,327 @@
+[
+  {
+    "id": "encryption.db-at-rest",
+    "category": "encryption-at-rest",
+    "severity": "must",
+    "title": "Database storage encryption enabled",
+    "check": {
+      "fact": "infra.db_encryption_at_rest",
+      "op": "truthy"
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html",
+    "fix_hint": "Set `storage_encrypted = true` on RDS, `encryption_at_rest_options` on OpenSearch, encryption-at-rest config on MongoDB Atlas / Firestore.",
+    "rationale": "164.312(a)(2)(iv) \u2014 Encryption of ePHI at rest (addressable, but breach safe harbor depends on it)."
+  },
+  {
+    "id": "encryption.s3-default",
+    "category": "encryption-at-rest",
+    "severity": "must",
+    "title": "S3 / object storage default encryption enabled",
+    "check": {
+      "fact": "infra.object_storage_encryption",
+      "op": "truthy"
+    },
+    "source_url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-bucket-encryption.html",
+    "fix_hint": "Enable SSE-S3 or SSE-KMS as default on all buckets holding PHI / backups.",
+    "rationale": "Breach Notification Safe Harbor (HHS): encrypted PHI per NIST 800-111 is not a reportable breach."
+  },
+  {
+    "id": "encryption.backups",
+    "category": "encryption-at-rest",
+    "severity": "must",
+    "title": "Backups encrypted",
+    "check": {
+      "fact": "infra.backups_encrypted",
+      "op": "truthy"
+    },
+    "source_url": "https://csrc.nist.gov/publications/detail/sp/800-66/rev-2/final",
+    "fix_hint": "Encrypt backup snapshots, off-site copies, and DR replicas.",
+    "rationale": "NIST 800-66 Rev 2 \u00a75.5 \u2014 Data backup plan."
+  },
+  {
+    "id": "encryption.tls-min",
+    "category": "encryption-in-transit",
+    "severity": "must",
+    "title": "TLS 1.2+ enforced (no plaintext HTTP)",
+    "check": {
+      "fact": "infra.tls_min_version_ok",
+      "op": "truthy"
+    },
+    "source_url": "https://csrc.nist.gov/publications/detail/sp/800-52/rev-2/final",
+    "fix_hint": "Disable TLS 1.0/1.1. Redirect all HTTP \u2192 HTTPS. Set `min_tls_version = TLS1_2` on load balancer / CloudFront.",
+    "rationale": "164.312(e)(1) \u2014 Transmission security."
+  },
+  {
+    "id": "encryption.hsts",
+    "category": "encryption-in-transit",
+    "severity": "should",
+    "title": "HSTS header set",
+    "check": {
+      "fact": "infra.hsts_enabled",
+      "op": "truthy"
+    },
+    "source_url": "https://owasp.org/www-project-secure-headers/",
+    "fix_hint": "Add `Strict-Transport-Security: max-age=31536000; includeSubDomains` on all public endpoints.",
+    "rationale": "Prevent downgrade and SSL-strip attacks against ePHI in transit."
+  },
+  {
+    "id": "encryption.no-disabled-verify",
+    "category": "encryption-in-transit",
+    "severity": "must",
+    "title": "No disabled TLS verification in code",
+    "check": {
+      "fact": "code.tls_verify_disabled",
+      "op": "falsy"
+    },
+    "source_url": "https://owasp.org/www-community/vulnerabilities/Improper_Validation_of_Certificate_with_Host_Mismatch",
+    "fix_hint": "Remove `verify=False`, `rejectUnauthorized: false`, `InsecureSkipVerify: true`, `NSAllowsArbitraryLoads = true`.",
+    "rationale": "Defeats encryption-in-transit; MITM-able PHI flow."
+  },
+  {
+    "id": "encryption.no-plaintext-http",
+    "category": "encryption-in-transit",
+    "severity": "must",
+    "title": "No plaintext http:// URLs to PHI endpoints",
+    "check": {
+      "fact": "code.plaintext_http_count",
+      "op": "equals",
+      "value": 0
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html",
+    "fix_hint": "Replace http://\u2026 with https://\u2026 everywhere. Audit env vars too.",
+    "rationale": "164.312(e)(2)(ii) \u2014 Encryption required for PHI in transit over open networks."
+  },
+  {
+    "id": "access.auth-required",
+    "category": "access-control",
+    "severity": "must",
+    "title": "Authentication framework present",
+    "check": {
+      "fact": "deps.auth_framework_present",
+      "op": "truthy"
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html",
+    "fix_hint": "Add a vetted auth library (Auth0, Clerk, NextAuth, Devise, Spring Security).",
+    "rationale": "164.312(a)(1) \u2014 Unique user identification (Required)."
+  },
+  {
+    "id": "access.mfa",
+    "category": "access-control",
+    "severity": "should",
+    "title": "MFA configured (manual verification)",
+    "check": {
+      "fact": "infra.mfa_evidence",
+      "op": "truthy",
+      "manual": true
+    },
+    "source_url": "https://csrc.nist.gov/publications/detail/sp/800-66/rev-2/final",
+    "fix_hint": "Enable MFA for all admin + privileged accounts. Document enforcement.",
+    "rationale": "NIST 800-66 \u00a75.3 \u2014 Authentication."
+  },
+  {
+    "id": "access.no-wildcard-cors",
+    "category": "access-control",
+    "severity": "must",
+    "title": "No wildcard CORS on PHI endpoints",
+    "check": {
+      "fact": "code.wildcard_cors_count",
+      "op": "equals",
+      "value": 0
+    },
+    "source_url": "https://owasp.org/www-project-secure-headers/",
+    "fix_hint": "Replace `Access-Control-Allow-Origin: *` with explicit allowlist.",
+    "rationale": "164.308(a)(4) \u2014 Information access management."
+  },
+  {
+    "id": "access.session-timeout",
+    "category": "session-mgmt",
+    "severity": "should",
+    "title": "Session auto-logoff configured",
+    "check": {
+      "fact": "code.session_timeout_configured",
+      "op": "truthy"
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html",
+    "fix_hint": "Set session timeout \u2264 15 min idle on web/mobile clients.",
+    "rationale": "164.312(a)(2)(iii) \u2014 Automatic logoff (Addressable)."
+  },
+  {
+    "id": "audit.logging-present",
+    "category": "audit-logging",
+    "severity": "must",
+    "title": "Audit logging implementation present",
+    "check": {
+      "fact": "code.audit_log_evidence",
+      "op": "truthy"
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html",
+    "fix_hint": "Log every PHI read/write: who, record id, action, timestamp, IP. Pino, Winston, structlog, Logback.",
+    "rationale": "164.312(b) \u2014 Audit controls (Required)."
+  },
+  {
+    "id": "audit.retention-6yr",
+    "category": "audit-logging",
+    "severity": "should",
+    "title": "Log retention \u2265 6 years (manual verification)",
+    "check": {
+      "fact": "infra.log_retention_evidence",
+      "op": "truthy",
+      "manual": true
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/personal-representatives/index.html",
+    "fix_hint": "Configure CloudWatch / log archive lifecycle for 6yr+. Cite policy doc.",
+    "rationale": "164.316(b)(2) \u2014 Documentation retention 6 years."
+  },
+  {
+    "id": "phi.no-log-phi-patterns",
+    "category": "phi-in-logs",
+    "severity": "must",
+    "title": "No PHI patterns in log statements",
+    "check": {
+      "fact": "code.phi_in_logs_count",
+      "op": "equals",
+      "value": 0
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/minimum-necessary-requirement/index.html",
+    "fix_hint": "Scrub PHI before logging. Use redaction middleware. Replace `logger.info(user.ssn)` patterns.",
+    "rationale": "Logs are durable storage; PHI in logs = unauthorized disclosure path."
+  },
+  {
+    "id": "phi.scrubber-present",
+    "category": "phi-in-logs",
+    "severity": "should",
+    "title": "Log scrubber / redactor present",
+    "check": {
+      "fact": "code.log_scrubber_present",
+      "op": "truthy"
+    },
+    "source_url": "https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/",
+    "fix_hint": "Add a redactor (pino-noir, bunyan-redact, structlog processor, Sentry beforeSend).",
+    "rationale": "Defense-in-depth against accidental PHI in logs."
+  },
+  {
+    "id": "phi.no-identifiers-in-urls",
+    "category": "phi-in-urls",
+    "severity": "must",
+    "title": "No PHI identifiers in URL query strings",
+    "check": {
+      "fact": "code.phi_in_urls_count",
+      "op": "equals",
+      "value": 0
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html",
+    "fix_hint": "Move identifiers to POST body or opaque tokens. URLs leak to logs, referrers, analytics.",
+    "rationale": "URL = logged in many places; PHI in URL = disclosure."
+  },
+  {
+    "id": "secrets.no-hardcoded",
+    "category": "secrets-mgmt",
+    "severity": "must",
+    "title": "No hardcoded secrets in source",
+    "check": {
+      "fact": "code.hardcoded_secrets_count",
+      "op": "equals",
+      "value": 0
+    },
+    "source_url": "https://owasp.org/www-community/vulnerabilities/Use_of_hard-coded_credentials",
+    "fix_hint": "Move to env vars or secret manager (AWS Secrets Manager, GCP Secret Manager, Vault).",
+    "rationale": "Hardcoded secrets = PHI exposure on repo leak."
+  },
+  {
+    "id": "secrets.env-not-committed",
+    "category": "secrets-mgmt",
+    "severity": "must",
+    "title": ".env files not committed",
+    "check": {
+      "fact": "infra.env_committed_count",
+      "op": "equals",
+      "value": 0
+    },
+    "source_url": "https://12factor.net/config",
+    "fix_hint": "Add `.env` to `.gitignore`. Rotate any exposed credentials.",
+    "rationale": "Committed secrets = breach reportable."
+  },
+  {
+    "id": "input.validation-framework",
+    "category": "input-validation",
+    "severity": "should",
+    "title": "Input validation library present",
+    "check": {
+      "fact": "deps.validation_lib_present",
+      "op": "truthy"
+    },
+    "source_url": "https://owasp.org/www-community/Input_Validation",
+    "fix_hint": "Add zod / yup / joi / pydantic / class-validator / Bean Validation.",
+    "rationale": "Reduces injection and PHI integrity risk."
+  },
+  {
+    "id": "baa.no-blocked-vendors",
+    "category": "dep-baa",
+    "severity": "must",
+    "title": "No vendors that refuse BAA",
+    "check": {
+      "fact": "deps.baa_blocked_count",
+      "op": "equals",
+      "value": 0
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/business-associates/index.html",
+    "fix_hint": "Replace flagged vendors (Google Analytics, Meta Pixel, Mailchimp, etc.). See docs/BAA_VENDORS.md.",
+    "rationale": "164.504(e) \u2014 BAA required for any vendor handling PHI."
+  },
+  {
+    "id": "baa.enterprise-required-flagged",
+    "category": "dep-baa",
+    "severity": "should",
+    "title": "Vendors requiring Enterprise BAA tier flagged",
+    "check": {
+      "fact": "deps.baa_enterprise_required_count",
+      "op": "lte",
+      "value": 99
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/business-associates/index.html",
+    "fix_hint": "Confirm Enterprise tier active on Sentry, Datadog, Vercel, etc., with signed BAA on file.",
+    "rationale": "Standard tiers of these vendors exclude PHI; only Enterprise BAA covers."
+  },
+  {
+    "id": "deid.no-real-phi-in-fixtures",
+    "category": "de-identification",
+    "severity": "should",
+    "title": "No real PHI patterns in test fixtures / seeds",
+    "check": {
+      "fact": "code.phi_in_fixtures_count",
+      "op": "equals",
+      "value": 0
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html",
+    "fix_hint": "Use Faker / synthetic data in test/seed files.",
+    "rationale": "45 CFR \u00a7 164.514(b)(2) \u2014 Safe Harbor de-identification for non-prod data."
+  },
+  {
+    "id": "breach.incident-runbook",
+    "category": "breach-readiness",
+    "severity": "should",
+    "title": "Incident response runbook exists (manual verification)",
+    "check": {
+      "fact": "infra.incident_runbook_present",
+      "op": "truthy",
+      "manual": true
+    },
+    "source_url": "https://www.hhs.gov/hipaa/for-professionals/breach-notification/index.html",
+    "fix_hint": "Document breach response: detection, containment, notification (60-day clock), forensics, postmortem.",
+    "rationale": "164.404 \u2014 Breach notification within 60 days of discovery."
+  },
+  {
+    "id": "breach.risk-analysis-doc",
+    "category": "breach-readiness",
+    "severity": "must",
+    "title": "Risk analysis document present (manual verification)",
+    "check": {
+      "fact": "infra.risk_analysis_doc_present",
+      "op": "truthy",
+      "manual": true
+    },
+    "source_url": "https://csrc.nist.gov/publications/detail/sp/800-30/rev-1/final",
+    "fix_hint": "Produce annual risk analysis per NIST 800-30. OCR asks for this first in any investigation.",
+    "rationale": "164.308(a)(1)(ii)(A) \u2014 Risk analysis (Required)."
+  }
+]

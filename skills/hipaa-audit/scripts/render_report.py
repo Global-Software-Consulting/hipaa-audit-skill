@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""
+Render audit.json → audit.md (human-readable report with score + analytics).
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from collections import Counter
+from pathlib import Path
+
+VERDICT_BADGE = {
+    "compliant": "✅ COMPLIANT",
+    "partially_compliant": "⚠️  PARTIALLY COMPLIANT",
+    "not_compliant": "❌ NOT COMPLIANT",
+}
+STATUS_ICON = {
+    "pass": "✓",
+    "fail": "✗",
+    "manual": "?",
+    "skipped": "—",
+}
+SEVERITY_ORDER = {"must": 0, "should": 1, "nice": 2}
+
+
+def bar(score: int, width: int = 20) -> str:
+    filled = round(score / 100 * width)
+    return "█" * filled + "░" * (width - filled)
+
+
+def render(audit: dict) -> str:
+    lines: list[str] = []
+    p = lines.append
+
+    p("# HIPAA Compliance Audit Report\n")
+    p(f"**Project:** `{audit.get('project_path', 'unknown')}`")
+    p(f"**Verdict:** {VERDICT_BADGE.get(audit['verdict'], audit['verdict'])}")
+    p(f"**Overall Score:** **{audit['overall_score']}/100** `{bar(audit['overall_score'])}`")
+    p(f"**Rules evaluated:** {audit['rules_total']}\n")
+
+    p("> ⚠️  Static analysis only. Does NOT replace a HITRUST / SOC 2 + HIPAA audit by a qualified auditor.\n")
+
+    p("## Category Scores\n")
+    p("| Category | Score | Bar |")
+    p("|----------|-------|-----|")
+    for cat, score in sorted(audit["category_scores"].items(), key=lambda x: x[1]):
+        p(f"| {cat} | **{score}** | `{bar(score, 16)}` |")
+    p("")
+
+    s = audit["summary"]
+    p("## Severity Summary\n")
+    p("| Severity | Pass | Fail | Manual | Skipped |")
+    p("|----------|------|------|--------|---------|")
+    for sev in ("must", "should", "nice"):
+        row = s.get(sev, {})
+        p(f"| **{sev}** | {row.get('pass', 0)} | {row.get('fail', 0)} | {row.get('manual', 0)} | {row.get('skipped', 0)} |")
+    p("")
+
+    fails = [f for f in audit["findings"] if f["status"] == "fail"]
+    fails_must = [f for f in fails if f["severity"] == "must"]
+    fails_should = [f for f in fails if f["severity"] == "should"]
+    manuals = [f for f in audit["findings"] if f["status"] == "manual"]
+
+    p("## Analytics\n")
+    p(f"- **MUST failures (block compliance):** {len(fails_must)}")
+    p(f"- **SHOULD failures:** {len(fails_should)}")
+    p(f"- **Manual verification needed:** {len(manuals)}")
+
+    cat_fail = Counter(f["category"] for f in fails)
+    if cat_fail:
+        p("- **Top failing categories:**")
+        for cat, n in cat_fail.most_common(5):
+            p(f"  - `{cat}` — {n} failure(s)")
+
+    vendors = audit.get("vendor_matches", [])
+    if vendors:
+        blocked = [v for v in vendors if v["baa"] == "blocked"]
+        ent = [v for v in vendors if v["baa"] == "enterprise_required"]
+        p(f"- **Vendors blocked (no BAA):** {len(blocked)}")
+        if blocked:
+            for v in blocked:
+                p(f"  - ❌ `{v['package']}` ({v['vendor']})")
+        p(f"- **Vendors needing Enterprise tier BAA:** {len(ent)}")
+        if ent:
+            for v in ent[:10]:
+                p(f"  - ⚠️  `{v['package']}` ({v['vendor']})")
+    p("")
+
+    if fails_must:
+        p("## 🔴 Critical — MUST Fix\n")
+        for f in fails_must:
+            p(f"### {STATUS_ICON[f['status']]} `{f['rule_id']}` — {f['title']}")
+            p(f"- **Category:** `{f['category']}` · **Severity:** **{f['severity']}**")
+            p(f"- **Why it matters:** {f['rationale']}")
+            p(f"- **Fix:** {f['fix_hint']}")
+            if f.get("evidence"):
+                p("- **Evidence:**")
+                for e in f["evidence"]:
+                    p(f"    - `{e}`")
+            p(f"- **Source:** {f['source_url']}\n")
+
+    if fails_should:
+        p("## 🟡 Should Fix\n")
+        for f in fails_should:
+            p(f"- ✗ `{f['rule_id']}` — {f['title']}")
+            p(f"  - Fix: {f['fix_hint']}")
+            p(f"  - Source: {f['source_url']}")
+        p("")
+
+    if manuals:
+        p("## 🔵 Manual Verification\n")
+        p("These cannot be automated. Confirm and document:")
+        for f in manuals:
+            p(f"- `{f['rule_id']}` — {f['title']}")
+        p("")
+
+    p("## ✅ Passing Checks\n")
+    passing = [f for f in audit["findings"] if f["status"] == "pass"]
+    if passing:
+        p(f"_{len(passing)} checks passed:_")
+        for f in sorted(passing, key=lambda x: (SEVERITY_ORDER[x['severity']], x["category"])):
+            p(f"- ✓ `{f['rule_id']}` — {f['title']}")
+    else:
+        p("_None_")
+    p("")
+
+    p("## Remediation Roadmap\n")
+    p("**Week 1 (block deploy):**")
+    for f in fails_must:
+        p(f"- [ ] `{f['rule_id']}` — {f['title']}")
+    p("\n**Sprint 1 (next 2 weeks):**")
+    for f in fails_should:
+        p(f"- [ ] `{f['rule_id']}` — {f['title']}")
+    p("\n**Manual verification (compliance team):**")
+    for f in manuals:
+        p(f"- [ ] `{f['rule_id']}` — {f['title']}")
+    p("")
+
+    p("---")
+    p("_Generated by hipaa-audit skill. Pair with qualified HIPAA auditor before claiming legal compliance._")
+    return "\n".join(lines)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--audit", type=Path, required=True)
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args()
+
+    audit = json.loads(args.audit.read_text())
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(render(audit))
+    print(f"render_report → {args.out}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

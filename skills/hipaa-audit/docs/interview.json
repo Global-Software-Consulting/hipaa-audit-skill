@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "sections": [
+    {
+      "key": "baa",
+      "title": "Business Associate Agreements",
+      "questions": [
+        {"id": "baa.with_covered_entity", "severity": "must", "category": "dep-baa", "prompt": "Signed BAA with every covered entity sending you PHI?", "accept": "yes_no_partial"},
+        {"id": "baa.with_subprocessors", "severity": "must", "category": "dep-baa", "prompt": "Signed BAA with every vendor that touches PHI (cloud, email, error tracker, analytics, CDN)?", "accept": "yes_no_partial"},
+        {"id": "baa.review_cadence", "severity": "should", "category": "dep-baa", "prompt": "Cadence of BAA vendor list reviews?", "accept": "enum:never|annually|quarterly|monthly"}
+      ]
+    },
+    {
+      "key": "risk",
+      "title": "Risk Analysis & Management",
+      "questions": [
+        {"id": "risk.analysis_doc", "severity": "must", "category": "breach-readiness", "prompt": "Written HIPAA risk analysis document (NIST 800-30)?", "accept": "yes_no"},
+        {"id": "risk.review_cadence", "severity": "must", "category": "breach-readiness", "prompt": "Date of last risk analysis review.", "accept": "date"},
+        {"id": "risk.mitigation_plan", "severity": "should", "category": "breach-readiness", "prompt": "Risk mitigation plan with owners + deadlines?", "accept": "yes_no_partial"}
+      ]
+    },
+    {
+      "key": "workforce",
+      "title": "Workforce & Policies",
+      "questions": [
+        {"id": "workforce.training_log", "severity": "must", "category": "access-control", "prompt": "Annual HIPAA training with signed acknowledgments per workforce member?", "accept": "yes_no_partial"},
+        {"id": "workforce.sanction_policy", "severity": "must", "category": "access-control", "prompt": "Written sanction policy for HIPAA violations?", "accept": "yes_no"},
+        {"id": "workforce.privacy_officer", "severity": "must", "category": "access-control", "prompt": "Designated Privacy Officer in writing?", "accept": "yes_no"},
+        {"id": "workforce.security_officer", "severity": "must", "category": "access-control", "prompt": "Designated Security Officer in writing?", "accept": "yes_no"},
+        {"id": "workforce.termination_procedure", "severity": "must", "category": "access-control", "prompt": "Documented 24h access-revocation procedure on workforce exit?", "accept": "yes_no_partial"}
+      ]
+    },
+    {
+      "key": "access",
+      "title": "Access Reviews & MFA",
+      "questions": [
+        {"id": "access.review_cadence", "severity": "should", "category": "access-control", "prompt": "Cadence of PHI access reviews?", "accept": "enum:never|annually|quarterly|monthly"},
+        {"id": "access.mfa_enforced", "severity": "must", "category": "access-control", "prompt": "MFA enforced for ALL workforce accounts touching PHI?", "accept": "yes_no_partial"},
+        {"id": "access.shared_accounts", "severity": "must", "category": "access-control", "prompt": "Any shared / generic accounts in the PHI flow?", "accept": "yes_no"}
+      ]
+    },
+    {
+      "key": "audit",
+      "title": "Audit Logs",
+      "questions": [
+        {"id": "audit.phi_access_logged", "severity": "must", "category": "audit-logging", "prompt": "Every PHI READ logged with user + record id + timestamp + IP?", "accept": "yes_no_partial"},
+        {"id": "audit.immutable_storage", "severity": "must", "category": "audit-logging", "prompt": "Audit logs in append-only / immutable storage?", "accept": "yes_no"},
+        {"id": "audit.retention_6yr", "severity": "must", "category": "audit-logging", "prompt": "Audit logs retained ≥ 6 years?", "accept": "yes_no"},
+        {"id": "audit.review_cadence", "severity": "should", "category": "audit-logging", "prompt": "How often are audit logs reviewed / alerted on?", "accept": "enum:never|on_incident|weekly|daily|realtime_alerts"}
+      ]
+    },
+    {
+      "key": "encrypt",
+      "title": "Encryption (verified at runtime)",
+      "questions": [
+        {"id": "encrypt.runtime_verified", "severity": "must", "category": "encryption-at-rest", "prompt": "Verified at cloud-console level (not just IaC) that DB + object storage encryption is on?", "accept": "yes_no"},
+        {"id": "encrypt.backup_restore_tested", "severity": "should", "category": "encryption-at-rest", "prompt": "Encrypted backup restore tested in last 12 months?", "accept": "yes_no"},
+        {"id": "encrypt.key_management", "severity": "must", "category": "encryption-at-rest", "prompt": "Keys in KMS / HSM with rotation policy?", "accept": "yes_no_partial"},
+        {"id": "encrypt.tls_external_verified", "severity": "must", "category": "encryption-in-transit", "prompt": "Public TLS scanned (SSL Labs / testssl.sh), grade A, no TLS 1.0/1.1?", "accept": "yes_no"}
+      ]
+    },
+    {
+      "key": "incident",
+      "title": "Incident Response",
+      "questions": [
+        {"id": "incident.runbook", "severity": "must", "category": "breach-readiness", "prompt": "Written incident response runbook (detection → containment → notification → forensics → postmortem)?", "accept": "yes_no"},
+        {"id": "incident.tabletop_test", "severity": "should", "category": "breach-readiness", "prompt": "Date of last IR tabletop test.", "accept": "date"},
+        {"id": "incident.breach_log", "severity": "must", "category": "breach-readiness", "prompt": "Log of all incidents (even non-reportable) with response actions?", "accept": "yes_no"},
+        {"id": "incident.notification_template", "severity": "should", "category": "breach-readiness", "prompt": "Pre-approved breach notification template (individuals + HHS + media)?", "accept": "yes_no"}
+      ]
+    },
+    {
+      "key": "physical",
+      "title": "Physical Safeguards",
+      "questions": [
+        {"id": "physical.facility_policy", "severity": "must", "category": "breach-readiness", "prompt": "Written facility access policy (incl. WFH workstation policy)?", "accept": "yes_no"},
+        {"id": "physical.device_disposal", "severity": "must", "category": "breach-readiness", "prompt": "Documented secure-disposal / sanitization procedure (NIST 800-88)?", "accept": "yes_no"},
+        {"id": "physical.workstation_security", "severity": "should", "category": "breach-readiness", "prompt": "Workstations: disk encryption + auto-lock + AV + MDM enrolled?", "accept": "yes_no_partial"}
+      ]
+    },
+    {
+      "key": "dr",
+      "title": "Disaster Recovery / Contingency",
+      "questions": [
+        {"id": "dr.plan_document", "severity": "must", "category": "breach-readiness", "prompt": "Written DR plan with documented RTO + RPO?", "accept": "yes_no"},
+        {"id": "dr.last_test", "severity": "should", "category": "breach-readiness", "prompt": "Date of last DR test (failover or game-day).", "accept": "date"},
+        {"id": "dr.backup_offsite", "severity": "must", "category": "encryption-at-rest", "prompt": "Backups stored in geographically separate region from prod?", "accept": "yes_no"}
+      ]
+    },
+    {
+      "key": "deid",
+      "title": "De-identification & Dev Data",
+      "questions": [
+        {"id": "deid.prod_only_phi", "severity": "must", "category": "de-identification", "prompt": "Real PHI used ONLY in prod (no real PHI in staging/dev/demo/fixtures)?", "accept": "yes_no"},
+        {"id": "deid.method_used", "severity": "should", "category": "de-identification", "prompt": "De-identification method used?", "accept": "enum:safe_harbor|expert_determination|limited_data_set|none"},
+        {"id": "deid.reidentification_test", "severity": "nice", "category": "de-identification", "prompt": "Re-identification test attempted on de-identified datasets?", "accept": "yes_no"}
+      ]
+    },
+    {
+      "key": "privacy",
+      "title": "Patient Rights (Privacy Rule)",
+      "questions": [
+        {"id": "privacy.npp_published", "severity": "must", "category": "breach-readiness", "prompt": "Notice of Privacy Practices published + accessible to patients?", "accept": "yes_no"},
+        {"id": "privacy.access_request_flow", "severity": "must", "category": "breach-readiness", "prompt": "Process to fulfill patient PHI access requests within 30 days?", "accept": "yes_no"},
+        {"id": "privacy.amendment_flow", "severity": "should", "category": "breach-readiness", "prompt": "Process for patient PHI amendment requests?", "accept": "yes_no"},
+        {"id": "privacy.accounting_of_disclosures", "severity": "should", "category": "breach-readiness", "prompt": "Accounting of disclosures (non-TPO) on request?", "accept": "yes_no"},
+        {"id": "privacy.minimum_necessary", "severity": "must", "category": "access-control", "prompt": "Access to PHI restricted to minimum necessary per role (not full DB read)?", "accept": "yes_no_partial"}
+      ]
+    },
+    {
+      "key": "mobile",
+      "title": "Mobile-Specific (skip if no mobile app)",
+      "applies_when": "project_type == mobile",
+      "questions": [
+        {"id": "mobile.cert_pinning", "severity": "should", "category": "encryption-in-transit", "prompt": "Mobile app uses cert pinning?", "accept": "yes_no_partial"},
+        {"id": "mobile.biometric_lock", "severity": "should", "category": "access-control", "prompt": "Biometric / passcode lock required to open the app?", "accept": "yes_no"},
+        {"id": "mobile.screenshot_disabled", "severity": "should", "category": "phi-in-logs", "prompt": "Screenshots / screen-recording disabled on PHI screens?", "accept": "yes_no_partial"},
+        {"id": "mobile.background_blur", "severity": "nice", "category": "phi-in-logs", "prompt": "PHI blurred on app-switcher / background?", "accept": "yes_no"},
+        {"id": "mobile.no_phi_push", "severity": "must", "category": "phi-in-logs", "prompt": "Push notifications avoid PHI in visible body?", "accept": "yes_no"},
+        {"id": "mobile.keychain_tokens", "severity": "must", "category": "secrets-mgmt", "prompt": "Tokens in Keychain/Keystore (not AsyncStorage / SharedPreferences)?", "accept": "yes_no"}
+      ]
+    }
+  ]
+}
