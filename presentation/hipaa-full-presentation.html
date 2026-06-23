@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<title>HIPAA Compliance — Complete Guide</title>
+<style>
+@page { size: A4 landscape; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { font-family: -apple-system, 'Segoe UI', sans-serif; color: #1a1a1a; background: #f5f5f5; line-height: 1.4; }
+.slide {
+  width: 297mm; height: 210mm; padding: 16mm 22mm; page-break-after: always;
+  background: #fff; display: flex; flex-direction: column; position: relative; overflow: hidden;
+}
+.slide:last-child { page-break-after: auto; }
+.slide-num { position: absolute; bottom: 8mm; right: 12mm; font-size: 10pt; color: #999; }
+.slide-brand { position: absolute; bottom: 8mm; left: 12mm; font-size: 9pt; color: #999; letter-spacing: 0.5px; text-transform: uppercase; }
+h1 { font-size: 32pt; font-weight: 800; margin-bottom: 6mm; line-height: 1.1; color: #0a3d62; }
+h2 { font-size: 22pt; font-weight: 700; margin-bottom: 4mm; color: #0a3d62; }
+h3 { font-size: 13pt; font-weight: 600; margin: 3mm 0 2mm; color: #1463cc; }
+p { font-size: 11pt; margin-bottom: 2.5mm; }
+ul, ol { margin: 0 0 3mm 6mm; }
+li { font-size: 10.5pt; margin-bottom: 1.2mm; }
+strong { color: #0a3d62; }
+em { color: #b3261e; font-style: normal; font-weight: 600; }
+code { font-family: 'SF Mono', Menlo, monospace; background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 9.5pt; }
+pre { background: #1a1d23; color: #e8eaed; padding: 4mm 6mm; border-radius: 3mm; font-size: 9pt; font-family: 'SF Mono', Menlo, monospace; overflow: hidden; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; font-size: 10pt; margin: 2mm 0; }
+th, td { border: 1px solid #e0e0e0; padding: 2mm 4mm; text-align: left; vertical-align: top; }
+th { background: #0a3d62; color: #fff; font-weight: 600; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.3px; }
+tr:nth-child(even) { background: #fafafa; }
+.cover { background: linear-gradient(135deg, #0a3d62 0%, #1463cc 100%); color: #fff; justify-content: center; align-items: flex-start; }
+.cover h1 { color: #fff; font-size: 52pt; max-width: 80%; }
+.cover .sub { font-size: 18pt; opacity: 0.85; margin-top: 4mm; }
+.cover .footer { position: absolute; bottom: 18mm; left: 22mm; font-size: 11pt; opacity: 0.75; }
+.cover .badge { position: absolute; top: 18mm; right: 22mm; background: rgba(255,255,255,0.15); padding: 3mm 6mm; border-radius: 999px; font-size: 10pt; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.cover .slide-num, .cover .slide-brand { color: rgba(255,255,255,0.5); }
+.section-divider { background: linear-gradient(135deg, #0a3d62 0%, #1463cc 100%); color: #fff; justify-content: center; align-items: center; text-align: center; }
+.section-divider h1 { color: #fff; font-size: 64pt; }
+.section-divider .sub { color: rgba(255,255,255,0.85); font-size: 16pt; margin-top: 3mm; }
+.section-divider .slide-num, .section-divider .slide-brand { color: rgba(255,255,255,0.6); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5mm; }
+.card { background: #f0f4f8; padding: 4mm 6mm; border-radius: 3mm; border-left: 4px solid #1463cc; }
+.card h3 { color: #0a3d62; margin-top: 0; font-size: 12pt; }
+.card.warn { border-left-color: #b3261e; background: #fde7e5; }
+.card.warn h3 { color: #b3261e; }
+.card.good { border-left-color: #0a7d36; background: #dcf4e3; }
+.card.good h3 { color: #0a7d36; }
+.card.amber { border-left-color: #a86700; background: #fff4dc; }
+.card.amber h3 { color: #a86700; }
+.kpi-row { display: flex; gap: 5mm; margin-top: 4mm; }
+.kpi { background: #f0f4f8; padding: 4mm 6mm; border-radius: 3mm; flex: 1; text-align: center; }
+.kpi .val { font-size: 28pt; font-weight: 800; color: #0a3d62; line-height: 1; }
+.kpi .lbl { font-size: 9pt; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2mm; }
+.bullet-tight li { margin-bottom: 1mm; font-size: 10pt; }
+.muted { color: #6b7280; }
+.tag { display: inline-block; padding: 1mm 3mm; border-radius: 2mm; font-size: 8.5pt; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+.tag.required { background: #fde7e5; color: #b3261e; }
+.tag.addressable { background: #fff4dc; color: #a86700; }
+.cite { font-size: 9pt; color: #6b7280; font-style: italic; margin-top: 2mm; }
+.toc { font-size: 11.5pt; column-count: 2; column-gap: 8mm; }
+.toc li { padding: 1.2mm 0; }
+.toc li::marker { color: #1463cc; font-weight: 700; }
+.big-num { font-size: 90pt; font-weight: 800; color: #1463cc; line-height: 1; }
+.q { font-size: 14pt; font-style: italic; color: #0a3d62; margin: 5mm 0; }
+.divider-line { border-top: 1px solid #e0e0e0; margin: 4mm 0; }
+.year { display: inline-block; background: #0a3d62; color: #fff; padding: 1mm 3mm; border-radius: 2mm; font-size: 9pt; font-weight: 700; margin-right: 3mm; }
+.timeline-item { padding: 3mm 0 3mm 8mm; border-left: 3px solid #1463cc; margin-left: 4mm; position: relative; }
+.timeline-item::before { content: ""; width: 4mm; height: 4mm; background: #1463cc; border-radius: 50%; position: absolute; left: -3mm; top: 4mm; }
+</style>
+</head>
+<body>
+
+<!-- 01 COVER -->
+<section class="slide cover">
+  <span class=badge>Education Deck</span>
+  <div style="margin-top:auto;margin-bottom:auto;">
+    <h1>HIPAA Compliance</h1>
+    <div class=sub>The Complete Guide — Privacy, Security &amp; Breach Notification Rules</div>
+  </div>
+  <div class=footer>
+    Presentation deck · 2026<br>
+    For engineering, product, security &amp; compliance teams
+  </div>
+  <span class=slide-num>01</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 02 TOC -->
+<section class=slide>
+  <h1>Agenda — 26 slides</h1>
+  <ol class=toc>
+    <li>What is HIPAA</li>
+    <li>History &amp; timeline</li>
+    <li>Who must comply — Covered Entities</li>
+    <li>Who must comply — Business Associates</li>
+    <li>What is PHI</li>
+    <li>The 18 Safe Harbor identifiers</li>
+    <li>The three HIPAA rules</li>
+    <li>Privacy Rule — overview</li>
+    <li>Privacy Rule — patient rights</li>
+    <li>Security Rule — overview</li>
+    <li>Administrative Safeguards</li>
+    <li>Physical Safeguards</li>
+    <li>Technical Safeguards</li>
+    <li>Required vs Addressable</li>
+    <li>Breach Notification Rule</li>
+    <li>Business Associate Agreements (BAA)</li>
+    <li>Minimum Necessary Standard</li>
+    <li>De-identification methods</li>
+    <li>Penalties &amp; enforcement</li>
+    <li>Real-world breach examples</li>
+    <li>Common violations</li>
+    <li>Implementation checklist</li>
+    <li>HIPAA vs other regulations</li>
+    <li>State-specific addenda</li>
+    <li>Key references</li>
+    <li>Q&amp;A</li>
+  </ol>
+  <span class=slide-num>02</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 03 What is HIPAA -->
+<section class=slide>
+  <h1>What is HIPAA?</h1>
+  <p style="font-size:13pt"><strong>Health Insurance Portability and Accountability Act</strong> — US federal law signed 1996 that protects sensitive patient health information from disclosure without consent.</p>
+  <div class=grid-2 style="margin-top:5mm">
+    <div>
+      <h3>Two main goals</h3>
+      <ol>
+        <li><strong>Portability</strong> — workers keep health insurance when changing jobs</li>
+        <li><strong>Accountability</strong> — set national standards for protecting health information</li>
+      </ol>
+      <h3>Why it matters today</h3>
+      <ul>
+        <li>Healthcare data breaches cost <strong>$10.93M average</strong> (IBM 2023 report) — highest of any industry</li>
+        <li>OCR enforcement up <strong>250%</strong> over last decade</li>
+        <li>Cyber attacks on healthcare up <strong>74%</strong> in 2023</li>
+        <li>Every state has additional health-data laws stacking on top</li>
+      </ul>
+    </div>
+    <div class=card>
+      <h3>Quick definition</h3>
+      <p><em>HIPAA</em> = the rules every entity touching protected health information (PHI) must follow.</p>
+      <p>If you handle health data of US patients, HIPAA applies — even if your company is foreign.</p>
+      <h3 style="margin-top:5mm">Enforced by</h3>
+      <ul class=bullet-tight>
+        <li><strong>HHS Office for Civil Rights (OCR)</strong> — federal enforcement</li>
+        <li><strong>State Attorneys General</strong> — can sue independently</li>
+        <li><strong>Department of Justice</strong> — criminal cases</li>
+      </ul>
+    </div>
+  </div>
+  <span class=slide-num>03</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 04 Timeline -->
+<section class=slide>
+  <h1>History &amp; timeline</h1>
+  <div class=timeline-item>
+    <span class=year>1996</span><strong>HIPAA enacted</strong> by Congress. Initially focused on insurance portability.
+  </div>
+  <div class=timeline-item>
+    <span class=year>2003</span><strong>Privacy Rule</strong> finalized. Sets standards for use and disclosure of PHI.
+  </div>
+  <div class=timeline-item>
+    <span class=year>2005</span><strong>Security Rule</strong> finalized. Sets standards for electronic PHI (ePHI).
+  </div>
+  <div class=timeline-item>
+    <span class=year>2009</span><strong>HITECH Act</strong> expanded HIPAA — added breach notification, increased penalties, extended to Business Associates directly.
+  </div>
+  <div class=timeline-item>
+    <span class=year>2013</span><strong>Omnibus Final Rule</strong> — strengthened BAA requirements, broadened "breach" definition (burden of proof shifted to covered entity).
+  </div>
+  <div class=timeline-item>
+    <span class=year>2024</span><strong>Tracking Technologies Bulletin</strong> (Dec) — OCR clarified Google Analytics / Meta Pixel on patient pages = HIPAA violation.
+  </div>
+  <div class=timeline-item>
+    <span class=year>2024</span><strong>NIST 800-66 Rev 2</strong> published — current implementation guide for the Security Rule.
+  </div>
+  <div class=timeline-item>
+    <span class=year>2025</span><strong>HIPAA Security Rule NPRM</strong> proposed — mandatory MFA, encryption, vulnerability scans, network segmentation. Expected finalization 2026–2027.
+  </div>
+  <span class=slide-num>04</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 05 Covered Entities -->
+<section class=slide>
+  <h1>Who must comply — Covered Entities</h1>
+  <p>HIPAA directly binds <strong>Covered Entities (CEs)</strong> — three categories defined by law.</p>
+  <div class=grid-3 style="margin-top:5mm">
+    <div class=card>
+      <h3>1. Healthcare Providers</h3>
+      <p>Any provider who transmits health info electronically in connection with a HIPAA-defined transaction.</p>
+      <ul class=bullet-tight>
+        <li>Hospitals, clinics</li>
+        <li>Physicians, dentists, chiropractors</li>
+        <li>Pharmacies</li>
+        <li>Mental health providers</li>
+        <li>Nursing homes</li>
+        <li>Home health agencies</li>
+      </ul>
+    </div>
+    <div class=card>
+      <h3>2. Health Plans</h3>
+      <p>Entity that provides or pays for medical care.</p>
+      <ul class=bullet-tight>
+        <li>Health insurance companies</li>
+        <li>HMOs</li>
+        <li>Employer-sponsored group plans</li>
+        <li>Government plans (Medicare, Medicaid, VA)</li>
+        <li>Dental, vision, prescription drug plans</li>
+      </ul>
+    </div>
+    <div class=card>
+      <h3>3. Healthcare Clearinghouses</h3>
+      <p>Entities that process health info between providers and payers.</p>
+      <ul class=bullet-tight>
+        <li>Billing services</li>
+        <li>Repricing companies</li>
+        <li>Community health management info systems</li>
+      </ul>
+      <p class=muted style="margin-top:3mm">Less common; included for completeness.</p>
+    </div>
+  </div>
+  <div class="card warn" style="margin-top:5mm">
+    <h3>Not covered by HIPAA</h3>
+    <p>Life insurance, workers' comp, employer health records (employment use), most fitness/wellness apps, consumer DNA tests. They have other laws (FTC Act, state laws, GDPR).</p>
+  </div>
+  <span class=slide-num>05</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 06 Business Associates -->
+<section class=slide>
+  <h1>Who must comply — Business Associates</h1>
+  <p><strong>Business Associate (BA)</strong> = any person or entity performing services for a Covered Entity that involves use or disclosure of PHI.</p>
+  <h3 style="margin-top:5mm">Examples of Business Associates</h3>
+  <div class=grid-2>
+    <ul class=bullet-tight>
+      <li>Cloud hosting providers (AWS, GCP, Azure)</li>
+      <li>SaaS platforms processing patient data</li>
+      <li>Software developers building EHR systems</li>
+      <li>Email services (Mailgun, SendGrid)</li>
+      <li>Error monitoring (Sentry, Datadog) — Enterprise tier</li>
+    </ul>
+    <ul class=bullet-tight>
+      <li>Billing &amp; claims processing</li>
+      <li>Lawyers, accountants, consultants with PHI access</li>
+      <li>Medical transcription services</li>
+      <li>Records storage / shredding companies</li>
+      <li>Subcontractors of any BA (cascade)</li>
+    </ul>
+  </div>
+  <div class="card amber" style="margin-top:5mm">
+    <h3>HITECH 2009 expansion</h3>
+    <p>Before HITECH, only Covered Entities could be fined. Now <strong>BAs are directly liable to OCR</strong> for HIPAA violations — same penalty tiers as CEs. Subcontractors of BAs also liable. The "BAA chain" can go 3+ levels deep.</p>
+  </div>
+  <div class="card good" style="margin-top:4mm">
+    <h3>If you build healthcare software</h3>
+    <p>You are <em>almost certainly</em> a Business Associate. You need a signed BAA with every Covered Entity client AND every subprocessor you use that touches PHI. <strong>No BAA + PHI flow = automatic violation</strong>.</p>
+  </div>
+  <span class=slide-num>06</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 07 What is PHI -->
+<section class=slide>
+  <h1>What is PHI?</h1>
+  <p style="font-size:13pt"><strong>Protected Health Information (PHI)</strong> = any information about health status, healthcare, or payment for healthcare that <em>can be linked to an individual</em>.</p>
+  <div class=grid-2 style="margin-top:6mm">
+    <div>
+      <h3>The formula</h3>
+      <pre style="font-size:11pt">PHI = Health Information + Identifier</pre>
+      <p style="margin-top:3mm">Either alone is not PHI. Combined, it is.</p>
+      <h3>Examples of PHI</h3>
+      <ul class=bullet-tight>
+        <li>Patient's name + diagnosis</li>
+        <li>Email + prescription</li>
+        <li>Phone number + appointment date</li>
+        <li>Photo of patient + medical record</li>
+        <li>IP address + visit to clinic website</li>
+        <li>Insurance ID + treatment claim</li>
+      </ul>
+    </div>
+    <div>
+      <h3>ePHI (electronic PHI)</h3>
+      <p>PHI created, stored, transmitted, or maintained electronically. <strong>Security Rule applies specifically to ePHI.</strong></p>
+      <ul class=bullet-tight>
+        <li>EHR / EMR records</li>
+        <li>Lab results in databases</li>
+        <li>Emails containing patient info</li>
+        <li>SMS, push notifications, app data</li>
+        <li>Backup tapes, cloud storage</li>
+        <li>Logs that capture PHI</li>
+      </ul>
+      <h3>Designated Record Set (DRS)</h3>
+      <p>The complete set of medical/billing records about a patient — what patients have right to access.</p>
+    </div>
+  </div>
+  <span class=slide-num>07</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 08 18 Identifiers -->
+<section class=slide>
+  <h1>The 18 Safe Harbor identifiers</h1>
+  <p class=muted>Per <code>45 CFR § 164.514(b)(2)</code>. Remove ALL 18 → data is de-identified → HIPAA no longer applies.</p>
+  <div class=grid-2 style="margin-top:4mm">
+    <ol class="bullet-tight">
+      <li>Names</li>
+      <li>Geographic info smaller than state (street, city, county, ZIP)</li>
+      <li>Dates except year (birth, admission, discharge, death, service)</li>
+      <li>Phone numbers</li>
+      <li>Fax numbers</li>
+      <li>Email addresses</li>
+      <li>Social Security numbers</li>
+      <li>Medical record numbers (MRN)</li>
+      <li>Health plan beneficiary numbers</li>
+    </ol>
+    <ol start=10 class="bullet-tight">
+      <li>Account numbers</li>
+      <li>Certificate / license numbers</li>
+      <li>Vehicle identifiers (license plates, VIN)</li>
+      <li>Device identifiers and serial numbers</li>
+      <li>Web URLs identifying individuals</li>
+      <li>IP addresses</li>
+      <li>Biometric identifiers (fingerprints, voiceprints, retinal scans)</li>
+      <li>Full-face photographs and comparable images</li>
+      <li>Any other unique identifying number, characteristic, or code</li>
+    </ol>
+  </div>
+  <div class="card warn" style="margin-top:4mm">
+    <h3>Common gotchas</h3>
+    <ul class=bullet-tight>
+      <li><strong>Black bars over eyes ≠ sufficient</strong> — full face means face anatomy, not just identifying gaze</li>
+      <li><strong>For patients &gt; 89</strong>, year must be aggregated to "90+" — birth year reveals age</li>
+      <li><strong>Rare disease + ZIP + age</strong> can re-identify even without name (statistical disclosure)</li>
+      <li><strong>Initials are identifiers</strong> in small populations</li>
+    </ul>
+  </div>
+  <span class=slide-num>08</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 09 Three Rules section divider -->
+<section class="slide section-divider">
+  <h1>The Three Rules</h1>
+  <div class=sub>Privacy · Security · Breach Notification</div>
+  <span class=slide-num>09</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 10 Privacy Rule overview -->
+<section class=slide>
+  <h1>Privacy Rule — overview</h1>
+  <p>Effective 2003. Sets national standards for <strong>use and disclosure</strong> of PHI in any form (paper, oral, electronic).</p>
+  <div class=grid-2 style="margin-top:5mm">
+    <div>
+      <h3>Core principle: Minimum Necessary</h3>
+      <p>When using or disclosing PHI, limit to the <em>minimum</em> needed for the purpose.</p>
+      <p>Does NOT apply to:</p>
+      <ul class=bullet-tight>
+        <li>Treatment (providers may need everything)</li>
+        <li>Patient-authorized disclosures</li>
+        <li>Disclosures to the patient themselves</li>
+        <li>Required by law (subpoenas, public health)</li>
+        <li>HHS compliance investigations</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Permitted uses without authorization (TPO)</h3>
+      <ol>
+        <li><strong>T</strong>reatment — providing care</li>
+        <li><strong>P</strong>ayment — billing, claims</li>
+        <li><strong>O</strong>perations — quality assessment, training, audits</li>
+      </ol>
+      <h3>Requires written authorization</h3>
+      <ul class=bullet-tight>
+        <li>Research (unless IRB waiver)</li>
+        <li>Marketing</li>
+        <li>Sale of PHI</li>
+        <li>Psychotherapy notes</li>
+        <li>Any use beyond TPO</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card amber" style="margin-top:4mm">
+    <h3>Notice of Privacy Practices (NPP)</h3>
+    <p>Every Covered Entity must publish a written notice describing how PHI is used, patient rights, and how to file complaints. Posted on website + given to patients at first encounter.</p>
+  </div>
+  <span class=slide-num>10</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 11 Patient Rights -->
+<section class=slide>
+  <h1>Privacy Rule — patient rights</h1>
+  <p>Six rights every patient has under HIPAA. Covered Entities must support all six.</p>
+  <div class=grid-2 style="margin-top:5mm">
+    <div class=card>
+      <h3>1. Right of Access</h3>
+      <p>Get a copy of their PHI in the requested format <strong>within 30 days</strong>. Electronic copy must be in machine-readable format.</p>
+    </div>
+    <div class=card>
+      <h3>2. Right to Amend</h3>
+      <p>Request corrections to PHI they believe is inaccurate or incomplete. CE can deny but must give reason.</p>
+    </div>
+    <div class=card>
+      <h3>3. Accounting of Disclosures</h3>
+      <p>Get a list of every non-TPO disclosure of their PHI in the past 6 years.</p>
+    </div>
+    <div class=card>
+      <h3>4. Request Restrictions</h3>
+      <p>Ask CE to limit use/disclosure (e.g., don't share with specific family member). CE may decline except for self-pay-only restriction.</p>
+    </div>
+    <div class=card>
+      <h3>5. Confidential Communications</h3>
+      <p>Receive PHI via alternative means (work address vs home, alternate phone).</p>
+    </div>
+    <div class=card>
+      <h3>6. File Complaints</h3>
+      <p>Complain to the CE or directly to HHS OCR — without retaliation.</p>
+    </div>
+  </div>
+  <p class=cite style="margin-top:3mm">Cite: 45 CFR § 164.520–528</p>
+  <span class=slide-num>11</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 12 Security Rule overview -->
+<section class=slide>
+  <h1>Security Rule — overview</h1>
+  <p>Effective 2005. Sets national standards for protecting <strong>electronic PHI (ePHI)</strong>. Does not apply to paper or oral PHI (Privacy Rule covers those).</p>
+  <h3 style="margin-top:5mm">Three principles</h3>
+  <div class=grid-3>
+    <div class=card>
+      <h3>Confidentiality</h3>
+      <p>ePHI not available to unauthorized people or processes.</p>
+    </div>
+    <div class=card>
+      <h3>Integrity</h3>
+      <p>ePHI not altered or destroyed without authorization.</p>
+    </div>
+    <div class=card>
+      <h3>Availability</h3>
+      <p>ePHI accessible to authorized people when needed.</p>
+    </div>
+  </div>
+  <h3 style="margin-top:5mm">Three categories of safeguards</h3>
+  <div class=grid-3>
+    <div class=card>
+      <h3>Administrative</h3>
+      <p>People + policies — workforce training, access management, risk analysis, incident response, BAAs.</p>
+    </div>
+    <div class=card>
+      <h3>Physical</h3>
+      <p>Buildings + devices — facility access, workstation policies, device disposal.</p>
+    </div>
+    <div class=card>
+      <h3>Technical</h3>
+      <p>Software — access controls, audit logs, integrity controls, transmission security (encryption).</p>
+    </div>
+  </div>
+  <p class=cite style="margin-top:3mm">Cite: 45 CFR §§ 164.302–318. Implementation guide: NIST 800-66 Rev 2 (2024).</p>
+  <span class=slide-num>12</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 13 Administrative Safeguards -->
+<section class=slide>
+  <h1>Administrative Safeguards</h1>
+  <p class=muted>The largest safeguard category. People + processes.</p>
+  <table>
+    <tr><th>Standard</th><th>Implementation specs</th><th>Type</th></tr>
+    <tr><td>Security Management Process</td><td>Risk analysis, risk management, sanction policy, info system activity review</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>Assigned Security Responsibility</td><td>Designated Security Officer in writing</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>Workforce Security</td><td>Authorization, supervision, workforce clearance, termination procedures</td><td><span class="tag addressable">addressable</span></td></tr>
+    <tr><td>Information Access Management</td><td>Isolating clearinghouse, access authorization, access establishment / modification</td><td><span class="tag addressable">addressable</span></td></tr>
+    <tr><td>Security Awareness and Training</td><td>Security reminders, malware protection, login monitoring, password management</td><td><span class="tag addressable">addressable</span></td></tr>
+    <tr><td>Security Incident Procedures</td><td>Response and reporting</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>Contingency Plan</td><td>Data backup, disaster recovery, emergency mode operation, testing &amp; revision, app/data criticality analysis</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>Evaluation</td><td>Periodic technical and non-technical evaluation of security posture</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>BAA &amp; Other Arrangements</td><td>Written contract or other arrangement with each BA</td><td><span class="tag required">required</span></td></tr>
+  </table>
+  <p class=cite>Cite: 45 CFR § 164.308</p>
+  <span class=slide-num>13</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 14 Physical Safeguards -->
+<section class=slide>
+  <h1>Physical Safeguards</h1>
+  <p class=muted>Protect ePHI in physical form — facilities, workstations, devices.</p>
+  <table>
+    <tr><th>Standard</th><th>Implementation specs</th><th>Type</th></tr>
+    <tr><td>Facility Access Controls</td><td>Contingency operations, facility security plan, access control &amp; validation procedures, maintenance records</td><td><span class="tag addressable">addressable</span></td></tr>
+    <tr><td>Workstation Use</td><td>Policies for proper functions, manner, and physical attributes of workstations accessing ePHI</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>Workstation Security</td><td>Physical safeguards for all workstations accessing ePHI</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>Device and Media Controls</td><td>Disposal, media re-use, accountability, data backup &amp; storage</td><td><span class="tag required">required</span></td></tr>
+  </table>
+  <h3 style="margin-top:5mm">Modern interpretation</h3>
+  <div class=grid-2>
+    <ul class=bullet-tight>
+      <li>Office access cards / visitor logs</li>
+      <li>Server room locks + cameras</li>
+      <li>Screen privacy filters</li>
+      <li>Auto-lock workstations after idle</li>
+      <li>Encrypted laptops with MDM enrollment</li>
+    </ul>
+    <ul class=bullet-tight>
+      <li>BYOD policy with remote wipe</li>
+      <li>Secure disposal of hard drives (NIST 800-88)</li>
+      <li>Work-from-home workstation policy</li>
+      <li>Media inventory (USB, tapes, paper records)</li>
+      <li>Cloud provider's physical security inherited via BAA</li>
+    </ul>
+  </div>
+  <p class=cite>Cite: 45 CFR § 164.310</p>
+  <span class=slide-num>14</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 15 Technical Safeguards -->
+<section class=slide>
+  <h1>Technical Safeguards</h1>
+  <p class=muted>What engineers usually mean when they say "HIPAA compliant code."</p>
+  <table>
+    <tr><th>Standard</th><th>Implementation specs</th><th>Type</th></tr>
+    <tr><td>Access Control</td><td>Unique user identification</td><td><span class="tag required">required</span></td></tr>
+    <tr><td></td><td>Emergency access procedure</td><td><span class="tag required">required</span></td></tr>
+    <tr><td></td><td>Automatic logoff</td><td><span class="tag addressable">addressable</span></td></tr>
+    <tr><td></td><td>Encryption &amp; decryption of ePHI at rest</td><td><span class="tag addressable">addressable</span></td></tr>
+    <tr><td>Audit Controls</td><td>Hardware, software, procedural mechanisms recording activity in systems with ePHI</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>Integrity</td><td>Mechanisms to authenticate ePHI (ensure not altered or destroyed)</td><td><span class="tag addressable">addressable</span></td></tr>
+    <tr><td>Person or Entity Authentication</td><td>Verify identity of person/entity seeking access</td><td><span class="tag required">required</span></td></tr>
+    <tr><td>Transmission Security</td><td>Integrity controls + encryption in transit (TLS 1.2+)</td><td><span class="tag addressable">addressable</span></td></tr>
+  </table>
+  <div class="card warn" style="margin-top:4mm">
+    <h3>"Addressable" is not optional</h3>
+    <p>Addressable means: implement it, OR document a reasonable equivalent. You cannot skip it. OCR specifically asks about addressable controls in audits — "we decided not to" is not a valid answer.</p>
+  </div>
+  <p class=cite>Cite: 45 CFR § 164.312</p>
+  <span class=slide-num>15</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 16 Required vs Addressable -->
+<section class=slide>
+  <h1>Required vs Addressable</h1>
+  <p>Every Security Rule implementation spec is labeled <strong>Required</strong> or <strong>Addressable</strong>. Misunderstanding this is the most common HIPAA error.</p>
+  <div class=grid-2 style="margin-top:5mm">
+    <div class="card warn">
+      <h3><span class="tag required">required</span> Required</h3>
+      <p>Mandatory. Must implement exactly as specified. No alternatives accepted.</p>
+      <p>Example: Unique user identification, audit controls, BAAs.</p>
+    </div>
+    <div class="card amber">
+      <h3><span class="tag addressable">addressable</span> Addressable</h3>
+      <p><em>Not optional.</em> Must either:</p>
+      <ol>
+        <li>Implement the specification as stated, OR</li>
+        <li>Implement a documented equivalent that achieves the same security objective, OR</li>
+        <li>Document a reasoned explanation of why no implementation is needed (rare and risky)</li>
+      </ol>
+      <p>Example: Encryption at rest, automatic logoff, integrity controls.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:5mm">
+    <h3>Best practice</h3>
+    <p>Treat all addressable specs as required unless you have written, dated, signed justification for an alternative. Document the reasoning in your risk analysis. OCR sees "addressable" as a soft "do this anyway."</p>
+  </div>
+  <p class=cite>Cite: 45 CFR § 164.306(d)(3)</p>
+  <span class=slide-num>16</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 17 Breach Notification Rule -->
+<section class=slide>
+  <h1>Breach Notification Rule</h1>
+  <p>Effective 2009 (HITECH). Defines what counts as a breach and what to do when one occurs.</p>
+  <h3 style="margin-top:5mm">What counts as a breach?</h3>
+  <p>Acquisition, access, use, or disclosure of PHI <strong>not permitted</strong> by the Privacy Rule that compromises security or privacy.</p>
+  <div class=grid-2 style="margin-top:4mm">
+    <div class=card>
+      <h3>4-Factor Risk Assessment</h3>
+      <ol>
+        <li>Nature and extent of PHI involved</li>
+        <li>Who accessed or received the PHI</li>
+        <li>Whether PHI was actually acquired or viewed</li>
+        <li>Extent to which risk has been mitigated</li>
+      </ol>
+      <p class=muted style="margin-top:2mm">Burden of proof is on you — default = breach.</p>
+    </div>
+    <div class=card>
+      <h3>Safe Harbor exception</h3>
+      <p>If ePHI was encrypted per NIST standards <strong>and</strong> the encryption key was not compromised → not a reportable breach.</p>
+      <p>This is why encryption is the #1 control.</p>
+    </div>
+  </div>
+  <h3 style="margin-top:4mm">Notification requirements</h3>
+  <table>
+    <tr><th>Scope</th><th>Affected individuals</th><th>HHS</th><th>Media</th></tr>
+    <tr><td>&lt; 500 individuals</td><td>Within 60 days</td><td>Annually (by Feb 28 next year)</td><td>Not required</td></tr>
+    <tr><td>≥ 500 individuals</td><td>Within 60 days</td><td>Within 60 days</td><td>Prominent media outlets in the affected state/jurisdiction within 60 days</td></tr>
+  </table>
+  <p class=cite>Cite: 45 CFR §§ 164.400–414</p>
+  <span class=slide-num>17</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 18 BAAs -->
+<section class=slide>
+  <h1>Business Associate Agreements (BAA)</h1>
+  <p><strong>BAA</strong> = the legal contract binding a Business Associate to HIPAA obligations. Without it, sharing PHI with a vendor = automatic violation.</p>
+  <h3 style="margin-top:5mm">A BAA must require the BA to</h3>
+  <div class=grid-2>
+    <ul class=bullet-tight>
+      <li>Use PHI only for the purpose stated</li>
+      <li>Implement appropriate safeguards</li>
+      <li>Report breaches to the Covered Entity</li>
+      <li>Pass HIPAA obligations to its own subcontractors via BAAs</li>
+      <li>Make PHI available to individuals exercising rights</li>
+    </ul>
+    <ul class=bullet-tight>
+      <li>Make books and records available to HHS for audit</li>
+      <li>Return or destroy PHI at contract termination</li>
+      <li>Use safeguards equivalent to Security Rule</li>
+      <li>Notify CE of unauthorized use/disclosure</li>
+      <li>Be directly liable to OCR (post-HITECH)</li>
+    </ul>
+  </div>
+  <h3 style="margin-top:5mm">Vendor BAA reality (2026)</h3>
+  <div class=grid-3>
+    <div class="card good">
+      <h3>Will sign BAA</h3>
+      <ul class=bullet-tight>
+        <li>AWS, GCP, Azure</li>
+        <li>Stripe, Twilio, SendGrid</li>
+        <li>Auth0, Okta, Clerk</li>
+        <li>Salesforce Health Cloud</li>
+      </ul>
+    </div>
+    <div class="card amber">
+      <h3>Enterprise tier only</h3>
+      <ul class=bullet-tight>
+        <li>Sentry, Datadog</li>
+        <li>Vercel, Netlify</li>
+        <li>Cloudflare</li>
+        <li>HubSpot, Intercom</li>
+      </ul>
+    </div>
+    <div class="card warn">
+      <h3>Will NOT sign — replace</h3>
+      <ul class=bullet-tight>
+        <li>Google Analytics, Meta Pixel</li>
+        <li>Mailchimp, Postmark</li>
+        <li>Slack standard</li>
+        <li>Mixpanel, standard Heap</li>
+      </ul>
+    </div>
+  </div>
+  <span class=slide-num>18</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 19 Minimum Necessary -->
+<section class=slide>
+  <h1>The Minimum Necessary Standard</h1>
+  <p style="font-size:13pt">Use, disclose, and request only the <strong>minimum amount of PHI</strong> needed to accomplish the intended purpose.</p>
+  <div class=grid-2 style="margin-top:6mm">
+    <div>
+      <h3>How it shows up in software</h3>
+      <ul>
+        <li><strong>RBAC, not "all read":</strong> nurses don't see billing data; billing doesn't see clinical notes</li>
+        <li><strong>API responses trim PHI:</strong> only return fields needed for the page/view</li>
+        <li><strong>Logs scrub PHI:</strong> log user_id, not patient_name + diagnosis</li>
+        <li><strong>Search excludes PHI columns</strong> unless authorized</li>
+        <li><strong>Reports aggregate before exporting</strong></li>
+        <li><strong>Mobile push titles don't include diagnosis</strong></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Exceptions (minimum necessary does NOT apply)</h3>
+      <ul>
+        <li>Disclosures to providers <strong>for treatment</strong></li>
+        <li>Disclosures <strong>to the individual</strong> themselves</li>
+        <li>Disclosures with <strong>patient authorization</strong></li>
+        <li>Disclosures <strong>required by law</strong></li>
+        <li>Disclosures to <strong>HHS for compliance review</strong></li>
+      </ul>
+      <div class="card amber" style="margin-top:4mm">
+        <h3>Engineer rule of thumb</h3>
+        <p>If you can't justify why this field/row/column needs to be visible to this user, it shouldn't be.</p>
+      </div>
+    </div>
+  </div>
+  <p class=cite>Cite: 45 CFR § 164.502(b), § 164.514(d)</p>
+  <span class=slide-num>19</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 20 De-identification -->
+<section class=slide>
+  <h1>De-identification methods</h1>
+  <p>Two methods to convert PHI into non-PHI data. Once de-identified, HIPAA no longer applies.</p>
+  <div class=grid-2 style="margin-top:5mm">
+    <div class=card>
+      <h3>Method 1: Safe Harbor</h3>
+      <p><strong>How:</strong> Remove all 18 identifiers (see slide 8).</p>
+      <p><strong>Plus:</strong> Have no actual knowledge that remaining info could identify individual.</p>
+      <p><strong>Pros:</strong> Mechanical, easy to verify, well-documented.</p>
+      <p><strong>Cons:</strong> Can destroy analytic utility (dates aggregated to year, geography to state).</p>
+      <p class=muted>Most common method. Recommended for most use cases.</p>
+    </div>
+    <div class=card>
+      <h3>Method 2: Expert Determination</h3>
+      <p><strong>How:</strong> Qualified statistician applies generally accepted statistical principles to determine "very small" risk of re-identification.</p>
+      <p><strong>Plus:</strong> Document methodology, analysis, conclusion.</p>
+      <p><strong>Pros:</strong> Can retain analytic detail (dates, geography).</p>
+      <p><strong>Cons:</strong> Requires expert. Expensive. Methodology must be defensible.</p>
+      <p class=muted>Use for research datasets where temporal/spatial detail matters.</p>
+    </div>
+  </div>
+  <h3 style="margin-top:5mm">Bonus: Limited Data Set (LDS)</h3>
+  <p>Removes 16 of 18 identifiers but may retain <strong>dates</strong> and <strong>geographic info larger than street address</strong>. Used for research / public health / operations. Requires a <strong>Data Use Agreement (DUA)</strong>, not full BAA.</p>
+  <p class=cite>Cite: 45 CFR § 164.514(b)–(e). HHS guidance: hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification</p>
+  <span class=slide-num>20</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 21 Penalties -->
+<section class=slide>
+  <h1>Penalties &amp; enforcement</h1>
+  <p>OCR investigates complaints and audits CEs / BAs. Penalties tiered by culpability. Updated annually for inflation.</p>
+  <table>
+    <tr><th>Tier</th><th>Culpability</th><th>Per violation</th><th>Annual cap</th></tr>
+    <tr><td>1</td><td>Did not know / could not have known</td><td>$137 – $68,928</td><td>$2,067,813</td></tr>
+    <tr><td>2</td><td>Reasonable cause, not wilful neglect</td><td>$1,379 – $68,928</td><td>$2,067,813</td></tr>
+    <tr><td>3</td><td>Wilful neglect — corrected within 30 days</td><td>$13,785 – $68,928</td><td>$2,067,813</td></tr>
+    <tr><td>4</td><td>Wilful neglect — NOT corrected</td><td>$68,928 – $2,067,813</td><td>$2,067,813</td></tr>
+  </table>
+  <p class=muted>2024 figures. Each "violation" can be each record affected, each day continued.</p>
+  <h3 style="margin-top:5mm">Criminal penalties (DOJ enforcement)</h3>
+  <table>
+    <tr><th>Offense</th><th>Fine</th><th>Prison</th></tr>
+    <tr><td>Knowing violation</td><td>up to $50,000</td><td>up to 1 year</td></tr>
+    <tr><td>Under false pretenses</td><td>up to $100,000</td><td>up to 5 years</td></tr>
+    <tr><td>Intent to sell, transfer, or use for gain</td><td>up to $250,000</td><td>up to 10 years</td></tr>
+  </table>
+  <p class=cite>Cite: 42 USC § 1320d-5, § 1320d-6</p>
+  <span class=slide-num>21</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 22 Real breaches -->
+<section class=slide>
+  <h1>Real-world breach examples</h1>
+  <table>
+    <tr><th>Year</th><th>Entity</th><th>Cause</th><th>Penalty / impact</th></tr>
+    <tr><td>2024</td><td>Change Healthcare (UnitedHealth subsidiary)</td><td>Ransomware via no-MFA Citrix portal</td><td>~190M records — largest healthcare breach ever. Multi-billion impact.</td></tr>
+    <tr><td>2024</td><td>Doctors Management Services</td><td>Ransomware — encrypted PHI exfiltrated</td><td>$1.3M OCR settlement + corrective action plan</td></tr>
+    <tr><td>2023</td><td>HCA Healthcare</td><td>Insider data theft — 11M records</td><td>Multiple class action suits, ongoing investigation</td></tr>
+    <tr><td>2022–2024</td><td>Multiple hospitals (Novant Health, Advocate Aurora, others)</td><td>Meta Pixel on patient portals</td><td>Class action settlements totaling $300M+</td></tr>
+    <tr><td>2022</td><td>Memorial Hermann Health System</td><td>Pixel tracking + ePHI to Meta</td><td>$1.5M settlement</td></tr>
+    <tr><td>2020</td><td>Premera Blue Cross</td><td>Phishing → APT → 10M records</td><td>$6.85M OCR settlement</td></tr>
+    <tr><td>2018</td><td>Anthem</td><td>Phishing → credential reuse → 78.8M records</td><td>$16M OCR settlement (largest)</td></tr>
+    <tr><td>2016</td><td>Advocate Health Care</td><td>4 unencrypted laptops stolen</td><td>$5.55M settlement</td></tr>
+  </table>
+  <div class="card warn" style="margin-top:4mm">
+    <h3>Pattern</h3>
+    <p>Top causes: (1) no MFA on remote access, (2) phishing leading to credential theft, (3) unencrypted endpoints, (4) third-party tracking pixels on patient pages, (5) insider misuse, (6) ransomware via unpatched edge.</p>
+  </div>
+  <span class=slide-num>22</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 23 Common violations -->
+<section class=slide>
+  <h1>Common violations (OCR top findings)</h1>
+  <div class=grid-2>
+    <div>
+      <h3>Technical</h3>
+      <ul class=bullet-tight>
+        <li>Missing or weak encryption (at rest, in transit)</li>
+        <li>No MFA on remote access</li>
+        <li>Shared admin accounts</li>
+        <li>Unrestricted database access (no RBAC)</li>
+        <li>PHI in logs, URLs, push notifications</li>
+        <li>Third-party trackers on patient pages</li>
+        <li>Public cloud storage buckets</li>
+        <li>Unpatched systems</li>
+        <li>No audit logging or insufficient retention</li>
+        <li>Unencrypted backups</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Administrative / Process</h3>
+      <ul class=bullet-tight>
+        <li><strong>No risk analysis</strong> (or stale — top finding)</li>
+        <li>No designated Security/Privacy Officer</li>
+        <li>Workforce training missing or undocumented</li>
+        <li>Missing or outdated BAAs</li>
+        <li>No incident response plan</li>
+        <li>No documented sanction policy</li>
+        <li>Termination procedures not followed (ex-employees retain access)</li>
+        <li>No access reviews</li>
+        <li>Disposal policy missing or ignored</li>
+        <li>Mailing PHI to wrong patient (top type by count)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card amber" style="margin-top:5mm">
+    <h3>The single most common finding</h3>
+    <p>OCR cites <strong>"failure to conduct an accurate and thorough risk analysis"</strong> in roughly 60% of all enforcement cases. Every other gap flows from not having a current one.</p>
+  </div>
+  <span class=slide-num>23</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 24 Checklist -->
+<section class=slide>
+  <h1>Implementation checklist (CTO view)</h1>
+  <h3>Foundation — the five things that block everything else</h3>
+  <ol>
+    <li><strong>Risk Analysis</strong> per NIST 800-30 — written, dated, reviewed annually</li>
+    <li><strong>BAAs inventoried + signed</strong> — every CE client, every subprocessor</li>
+    <li><strong>Encryption at rest + in transit</strong> — AES-256, TLS 1.2+, KMS keys</li>
+    <li><strong>Audit logs</strong> — every PHI read/write, immutable, 6-year retention</li>
+    <li><strong>Privacy + Security Officers</strong> designated in writing</li>
+  </ol>
+  <h3 style="margin-top:5mm">Operational layer</h3>
+  <div class=grid-2>
+    <ul class=bullet-tight>
+      <li>MFA on all workforce + admin accounts</li>
+      <li>RBAC + minimum necessary access</li>
+      <li>Unique user IDs (no shared accounts)</li>
+      <li>Session timeout + auto-logoff</li>
+      <li>Workforce HIPAA training, annual, documented</li>
+      <li>Sanction policy + termination procedure</li>
+    </ul>
+    <ul class=bullet-tight>
+      <li>Incident response runbook + tabletop tested</li>
+      <li>DR / contingency plan + tested</li>
+      <li>Backups encrypted, offsite, restore-tested</li>
+      <li>De-identification for dev/staging data</li>
+      <li>Notice of Privacy Practices published</li>
+      <li>Patient access request workflow (30-day SLA)</li>
+    </ul>
+  </div>
+  <h3 style="margin-top:4mm">Audit-readiness layer</h3>
+  <ul class=bullet-tight>
+    <li>Vendor BAA inventory + annual review</li>
+    <li>Annual security evaluation (technical + non-technical)</li>
+    <li>Penetration test annually</li>
+    <li>Patch management policy</li>
+    <li>Third-party SOC 2 or HITRUST audit (recommended)</li>
+  </ul>
+  <span class=slide-num>24</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 25 HIPAA vs other -->
+<section class=slide>
+  <h1>HIPAA vs other regulations</h1>
+  <table>
+    <tr><th>Regulation</th><th>Jurisdiction</th><th>Covers</th><th>HIPAA relationship</th></tr>
+    <tr><td><strong>HIPAA</strong></td><td>US federal</td><td>PHI from covered entities</td><td>baseline</td></tr>
+    <tr><td><strong>HITECH</strong></td><td>US federal</td><td>Strengthens HIPAA + breach notification</td><td>part of HIPAA framework</td></tr>
+    <tr><td><strong>42 CFR Part 2</strong></td><td>US federal</td><td>Substance use disorder records</td><td>stricter than HIPAA — needs explicit consent</td></tr>
+    <tr><td><strong>CCPA / CPRA</strong></td><td>California</td><td>Consumer data, including some health info</td><td>parallel — HIPAA-covered data exempt</td></tr>
+    <tr><td><strong>CMIA</strong></td><td>California</td><td>Medical info</td><td>stricter than HIPAA — applies in addition</td></tr>
+    <tr><td><strong>TX HB300</strong></td><td>Texas</td><td>Health records</td><td>stricter training + breach requirements</td></tr>
+    <tr><td><strong>NY SHIELD Act</strong></td><td>New York</td><td>Private info incl. health</td><td>additional safeguards</td></tr>
+    <tr><td><strong>GDPR</strong></td><td>EU</td><td>Personal data of EU residents</td><td>different framework — health = special category</td></tr>
+    <tr><td><strong>PIPEDA</strong></td><td>Canada</td><td>Personal info</td><td>federal — provinces have their own (PHIPA, etc.)</td></tr>
+    <tr><td><strong>FTC Act §5</strong></td><td>US federal</td><td>Consumer health apps (non-HIPAA)</td><td>FTC enforces "Health Breach Notification" for apps</td></tr>
+  </table>
+  <div class="card amber" style="margin-top:5mm">
+    <h3>Stacking rule</h3>
+    <p>When multiple laws apply, follow the <strong>strictest one</strong>. HIPAA preempts state laws only when state law is less protective. State law can always be stricter.</p>
+  </div>
+  <span class=slide-num>25</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 26 State -->
+<section class=slide>
+  <h1>State-specific addenda (selected)</h1>
+  <p>Many states layer additional rules on top of HIPAA. Selected examples:</p>
+  <table>
+    <tr><th>State</th><th>Law</th><th>Key additional requirements</th></tr>
+    <tr><td>California</td><td>CMIA + CCPA + CPRA</td><td>Broader definition of medical info; 15-day breach notice (vs 60); private right of action</td></tr>
+    <tr><td>Texas</td><td>HB300 / TMRPA</td><td>Mandatory training within 90 days of hire + biennially; encryption required (no addressable); 60-day breach notice</td></tr>
+    <tr><td>New York</td><td>SHIELD Act</td><td>Reasonable safeguards mandatory; covers any business with NY residents' data</td></tr>
+    <tr><td>Florida</td><td>FIPA</td><td>30-day breach notification (vs 60); AG must be notified</td></tr>
+    <tr><td>Illinois</td><td>PIPA, BIPA</td><td>Biometric info has consent requirements; substantial damages</td></tr>
+    <tr><td>Connecticut</td><td>Data Privacy Act</td><td>90-day notice + identity theft protection offer</td></tr>
+    <tr><td>Massachusetts</td><td>201 CMR 17.00</td><td>Written information security program (WISP) required</td></tr>
+    <tr><td>Washington</td><td>My Health My Data Act</td><td>Non-HIPAA health data — broad consent + right to delete</td></tr>
+  </table>
+  <div class="card warn" style="margin-top:5mm">
+    <h3>Operating across states</h3>
+    <p>If you serve patients in multiple states, the strictest combined rule applies. Don't assume HIPAA is enough — many startups have been fined under state laws while being "HIPAA compliant."</p>
+  </div>
+  <span class=slide-num>26</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 27 References -->
+<section class=slide>
+  <h1>Key references &amp; further reading</h1>
+  <h3>Primary sources (cite these in audits)</h3>
+  <ul class=bullet-tight>
+    <li><strong>45 CFR Parts 160, 162, 164</strong> — the actual federal regulation</li>
+    <li><strong>HHS HIPAA portal:</strong> hhs.gov/hipaa</li>
+    <li><strong>NIST 800-66 Rev 2 (2024)</strong> — HIPAA Security Rule implementation guide</li>
+    <li><strong>NIST 800-30 Rev 1</strong> — risk assessment methodology</li>
+    <li><strong>NIST 800-66B</strong> — guide for small/medium covered entities</li>
+    <li><strong>NIST 800-52 Rev 2</strong> — TLS configuration</li>
+    <li><strong>NIST 800-88 Rev 1</strong> — media sanitization</li>
+    <li><strong>OCR Audit Protocol</strong> — the 180-control checklist OCR uses</li>
+    <li><strong>HHS Tracking Technologies Bulletin (2024)</strong> — GA / pixel guidance</li>
+  </ul>
+  <h3 style="margin-top:5mm">Industry frameworks (recommended)</h3>
+  <ul class=bullet-tight>
+    <li><strong>HITRUST CSF</strong> — superset of HIPAA, audit-certifiable</li>
+    <li><strong>SOC 2 Type II + HIPAA</strong> — common B2B health SaaS combo</li>
+    <li><strong>CIS Controls v8</strong> — practical security baseline</li>
+    <li><strong>OWASP ASVS</strong> — application security verification</li>
+    <li><strong>NIST Cybersecurity Framework (CSF) 2.0</strong> — risk management baseline</li>
+  </ul>
+  <h3 style="margin-top:5mm">Where to file complaints / report breaches</h3>
+  <ul class=bullet-tight>
+    <li>HHS OCR breach portal: ocrportal.hhs.gov/ocr/breach</li>
+    <li>HHS OCR complaint portal: ocrportal.hhs.gov/ocr/smartscreen/main.jsf</li>
+  </ul>
+  <span class=slide-num>27</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+<!-- 28 Q&A cover -->
+<section class="slide cover">
+  <span class=badge>End of Deck</span>
+  <div style="margin-top:auto;margin-bottom:auto;">
+    <h1>Questions?</h1>
+    <div class=sub style="margin-top:6mm">
+      Discussion · Examples · Edge cases<br>
+      Reach out before architectural decisions that touch PHI.
+    </div>
+  </div>
+  <div class=footer>
+    HIPAA Compliance — Complete Guide<br>
+    2026 · For internal training &amp; reference
+  </div>
+  <span class=slide-num>28</span>
+  <span class=slide-brand>HIPAA Complete Guide</span>
+</section>
+
+</body>
+</html>
