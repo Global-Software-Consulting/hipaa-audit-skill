@@ -1,0 +1,46 @@
+---
+description: HIPAA compliance audit — 3-phase gap assessment (auto-scan, interview, scored report). Trigger on hipaa audit / phi leak check / baa audit / is my app hipaa compliant.
+globs:
+alwaysApply: false
+---
+
+# HIPAA Audit (Cursor rule)
+
+When the user asks for a "hipaa audit", "phi leak check", "baa audit", "safe harbor check",
+"is my app hipaa compliant", or similar, run the 3-phase HIPAA workflow below.
+This rule mirrors `skills/hipaa-audit/SKILL.md`; the scanner is plain Python (stdlib only).
+
+Do NOT use for general non-PHI security audits or pen-testing.
+
+## Phase 1 — Auto-scan (run this first)
+
+```bash
+bash skills/hipaa-audit/scripts/run_audit.sh <TARGET_PROJECT_PATH>
+```
+
+Flags: `--out DIR`, `--no-deps`, `--no-infra`, `--no-html-in-project`.
+Outputs `audit.{json,md,html}` to `/tmp/hipaa-audit-<timestamp>/` and drops
+`hipaa-audit-report.{html,md}` into the audited project. Report N issues found, then explain
+static analysis only covers ~30–40% of HIPAA — Phase 2 covers the rest.
+
+## Phase 2 — Interview
+
+Load `skills/hipaa-audit/docs/interview.json` (12 sections). Ask **3–5 questions per turn**,
+`must`-severity first. For each `no`/`partial`, ask the evidence prompt. Accept skip/unknown
+(record as `manual`). Persist answers to `<out>/interview.json` after each batch (resumable).
+Skip the `mobile` section for web/backend-only projects.
+
+## Phase 3 — Merge + report
+
+```bash
+python skills/hipaa-audit/scripts/merge_interview.py \
+  --audit "$OUT/audit.json" --interview-answers "$OUT/interview.json" \
+  --interview-schema skills/hipaa-audit/docs/interview.json --out "$OUT/audit_final.json"
+python skills/hipaa-audit/scripts/render_report.py --audit "$OUT/audit_final.json" --out "$OUT/audit_final.md"
+python skills/hipaa-audit/scripts/render_html.py   --audit "$OUT/audit_final.json" --out "$OUT/audit_final.html"
+```
+
+Then walk the user through the top 5 must-fix items and offer tickets / policy skeletons.
+
+**Verdict:** any `must` fail OR <60 → Not Compliant; 60–84 → Partially; ≥85 & no critical cat <70 → Compliant.
+`compliant` = automated checks passed, NOT legal certification. Review every finding (false positives expected).
