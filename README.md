@@ -65,6 +65,20 @@ Claude follows the 3-phase flow:
 2. **Phase 2 (interview, ~30–45 min, pausable):** Claude asks 3–5 questions per turn, MUST severity first. Skip / unknown accepted. Resumable across sessions.
 3. **Phase 3 (merge):** combined scored report. Walks you through top must-fix items, offers to generate tickets.
 
+### Other editors (Cursor, Copilot, Windsurf)
+
+The scanner is plain Python (stdlib only), so it runs anywhere. Editor adapters mirror the
+Claude skill so other AI tools can drive the same 3-phase flow:
+
+| Editor | File | How to use |
+|--------|------|------------|
+| Cursor | `.cursor/rules/hipaa-audit.mdc` + `.cursor/commands/hipaa-audit.md` | Run `/hipaa-audit <path>` or just ask for a HIPAA audit |
+| GitHub Copilot | `.github/prompts/hipaa-audit.prompt.md` | Run the `hipaa-audit` prompt from Copilot Chat |
+| Windsurf | `.windsurf/workflows/hipaa-audit.md` | Run `/hipaa-audit` (Windsurf workflow) |
+| Any agent | `AGENTS.md` | Read automatically by tools supporting the `AGENTS.md` convention |
+
+All adapters point at the same `skills/hipaa-audit/scripts/run_audit.sh` engine.
+
 ### Direct script (no Claude, Phase 1 only)
 
 ```bash
