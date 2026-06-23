@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<title>HIPAA Audit Skill — Presentation</title>
+<style>
+@page { size: A4 landscape; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { font-family: -apple-system, 'Segoe UI', sans-serif; color: #1a1a1a; background: #f5f5f5; line-height: 1.4; }
+.slide {
+  width: 297mm; height: 210mm; padding: 18mm 22mm; page-break-after: always;
+  background: #fff; display: flex; flex-direction: column; position: relative; overflow: hidden;
+}
+.slide:last-child { page-break-after: auto; }
+.slide-num { position: absolute; bottom: 8mm; right: 12mm; font-size: 10pt; color: #999; }
+.slide-brand { position: absolute; bottom: 8mm; left: 12mm; font-size: 9pt; color: #999; letter-spacing: 0.5px; text-transform: uppercase; }
+h1 { font-size: 36pt; font-weight: 800; margin-bottom: 8mm; line-height: 1.1; }
+h2 { font-size: 26pt; font-weight: 700; margin-bottom: 5mm; color: #0a3d62; }
+h3 { font-size: 14pt; font-weight: 600; margin: 4mm 0 2mm; color: #1463cc; }
+p { font-size: 12pt; margin-bottom: 3mm; }
+ul, ol { margin: 0 0 4mm 6mm; }
+li { font-size: 11pt; margin-bottom: 1.5mm; }
+strong { color: #0a3d62; }
+code { font-family: 'SF Mono', Menlo, monospace; background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 10pt; }
+pre { background: #1a1d23; color: #e8eaed; padding: 4mm 6mm; border-radius: 3mm; font-size: 9.5pt; font-family: 'SF Mono', Menlo, monospace; overflow: hidden; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; font-size: 10pt; margin: 3mm 0; }
+th, td { border: 1px solid #e0e0e0; padding: 2.5mm 4mm; text-align: left; vertical-align: top; }
+th { background: #0a3d62; color: #fff; font-weight: 600; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.3px; }
+tr:nth-child(even) { background: #fafafa; }
+.cover { background: linear-gradient(135deg, #0a3d62 0%, #1463cc 100%); color: #fff; justify-content: center; align-items: flex-start; }
+.cover h1 { color: #fff; font-size: 48pt; max-width: 70%; }
+.cover .sub { font-size: 18pt; opacity: 0.85; margin-top: 4mm; }
+.cover .footer { position: absolute; bottom: 18mm; left: 22mm; font-size: 11pt; opacity: 0.75; }
+.cover .badge { position: absolute; top: 18mm; right: 22mm; background: rgba(255,255,255,0.15); padding: 3mm 6mm; border-radius: 999px; font-size: 10pt; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.cover .slide-num, .cover .slide-brand { color: rgba(255,255,255,0.5); }
+.section-divider { background: #f0f4f8; justify-content: center; align-items: center; text-align: center; }
+.section-divider h1 { font-size: 60pt; color: #0a3d62; }
+.section-divider .sub { font-size: 14pt; color: #6b7280; margin-top: 3mm; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5mm; }
+.card { background: #f0f4f8; padding: 5mm 7mm; border-radius: 3mm; border-left: 4px solid #1463cc; }
+.card h3 { color: #0a3d62; margin-top: 0; }
+.card.warn { border-left-color: #b3261e; background: #fde7e5; }
+.card.warn h3 { color: #b3261e; }
+.card.good { border-left-color: #0a7d36; background: #dcf4e3; }
+.card.good h3 { color: #0a7d36; }
+.kpi-row { display: flex; gap: 5mm; margin-top: 4mm; }
+.kpi { background: #f0f4f8; padding: 4mm 6mm; border-radius: 3mm; flex: 1; text-align: center; }
+.kpi .val { font-size: 32pt; font-weight: 800; color: #0a3d62; line-height: 1; }
+.kpi .lbl { font-size: 9pt; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2mm; }
+.flow { display: flex; gap: 3mm; align-items: stretch; margin-top: 5mm; }
+.flow .step { flex: 1; background: #fff; border: 2px solid #1463cc; border-radius: 4mm; padding: 5mm; position: relative; }
+.flow .step h3 { color: #1463cc; margin: 0 0 2mm; font-size: 13pt; }
+.flow .arrow { display: flex; align-items: center; color: #1463cc; font-size: 18pt; font-weight: 800; }
+.bullet-tight li { margin-bottom: 1mm; font-size: 10.5pt; }
+.q-list { font-size: 10.5pt; }
+.q-list li { margin-bottom: 1.5mm; }
+.muted { color: #6b7280; }
+.tag { display: inline-block; padding: 1mm 3mm; border-radius: 2mm; font-size: 8.5pt; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-right: 2mm; }
+.tag.must { background: #fde7e5; color: #b3261e; }
+.tag.should { background: #fff4dc; color: #a86700; }
+.tag.nice { background: #e6f0ff; color: #1463cc; }
+.cite { font-size: 9pt; color: #6b7280; font-style: italic; margin-top: 2mm; }
+.toc { font-size: 12pt; }
+.toc li { padding: 1.5mm 0; border-bottom: 1px solid #e0e0e0; }
+.toc li::marker { color: #1463cc; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — COVER -->
+<section class="slide cover">
+  <span class=badge>Internal Presentation</span>
+  <div style="margin-top:auto;margin-bottom:auto;">
+    <h1>HIPAA Compliance Audit</h1>
+    <div class=sub>Static Scan + Guided Interview Skill for Claude Code</div>
+  </div>
+  <div class=footer>
+    Global Software Consulting · v0.1.0 · 2026-06-23<br>
+    github.com/Global-Software-Consulting/hipaa-audit-skill
+  </div>
+  <span class=slide-num>01</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 2 — TOC -->
+<section class=slide>
+  <h1>Agenda</h1>
+  <ol class=toc>
+    <li>Why HIPAA matters — the cost of getting it wrong</li>
+    <li>HIPAA in 30 seconds — the three rules</li>
+    <li>What counts as PHI — the 18 identifiers</li>
+    <li>What we built — overview</li>
+    <li>Three-phase architecture</li>
+    <li>Phase 1 — auto-scan (code, infra, deps)</li>
+    <li>Phase 2 — guided off-code interview</li>
+    <li>Phase 3 — merged scored report</li>
+    <li>Output samples — HTML / MD / JSON</li>
+    <li>Verdict + scoring model</li>
+    <li>Honest coverage + confidence levels</li>
+    <li>Use cases for our team</li>
+    <li>Install &amp; run</li>
+    <li>Roadmap — what's next</li>
+    <li>Q&amp;A</li>
+  </ol>
+  <span class=slide-num>02</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 3 — Why HIPAA -->
+<section class=slide>
+  <h1>Why HIPAA matters</h1>
+  <div class=grid-2>
+    <div>
+      <h3>The exposure</h3>
+      <ul>
+        <li>US federal law protecting <strong>Protected Health Information (PHI)</strong></li>
+        <li>Applies to every vendor touching health data (we're a <strong>Business Associate</strong>)</li>
+        <li>No signed BAA + PHI flow = automatic violation</li>
+        <li>State AGs, class actions, OCR all enforce independently</li>
+      </ul>
+      <h3>Cost of getting it wrong</h3>
+      <ul>
+        <li>Fines $137–$2M per violation category, per year</li>
+        <li>Criminal penalties up to 10 years prison for wilful neglect</li>
+        <li>Mandatory breach disclosure (60 days)</li>
+        <li>Lost healthcare deals — no clinical partner without proof</li>
+      </ul>
+    </div>
+    <div class="card warn">
+      <h3>Recent enforcement (2022–2025)</h3>
+      <ul class=bullet-tight>
+        <li>Multiple hospitals settled lawsuits over Meta Pixel on patient portals</li>
+        <li>OCR issued tracking technology bulletin (Dec 2024) — GA4 on clinical pages = breach</li>
+        <li>$1.3M settlement (2024) — Doctors Management Services / ransomware</li>
+        <li>$2.5M settlement (2025) — health plan / encryption gap</li>
+      </ul>
+      <div class=cite>Source: HHS OCR enforcement releases</div>
+    </div>
+  </div>
+  <span class=slide-num>03</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 4 — 3 Rules -->
+<section class=slide>
+  <h1>HIPAA in 30 seconds — the three rules</h1>
+  <div class=grid-3>
+    <div class=card>
+      <h3>Privacy Rule</h3>
+      <p><strong>Who can see PHI</strong></p>
+      <ul class=bullet-tight>
+        <li>Minimum necessary access</li>
+        <li>Patient rights: access, amend, accounting of disclosures</li>
+        <li>Written authorization outside TPO</li>
+      </ul>
+    </div>
+    <div class=card>
+      <h3>Security Rule</h3>
+      <p><strong>How to protect ePHI</strong></p>
+      <ul class=bullet-tight>
+        <li><strong>Administrative</strong> — training, risk analysis, BAAs</li>
+        <li><strong>Physical</strong> — facility, workstation, device disposal</li>
+        <li><strong>Technical</strong> — encryption, audit logs, access controls</li>
+      </ul>
+    </div>
+    <div class=card>
+      <h3>Breach Notification</h3>
+      <p><strong>What to do when you leak</strong></p>
+      <ul class=bullet-tight>
+        <li>60-day notification clock</li>
+        <li>≥500 affected = HHS + media</li>
+        <li>Burden of proof on YOU</li>
+      </ul>
+    </div>
+  </div>
+  <h3 style="margin-top:8mm">Roles to remember</h3>
+  <table>
+    <tr><th>Role</th><th>Meaning</th><th>Example</th></tr>
+    <tr><td>Covered Entity (CE)</td><td>Provider, insurer, clearinghouse</td><td>Hospital, BlueCross</td></tr>
+    <tr><td>Business Associate (BA)</td><td>Vendor handling PHI for a CE</td><td><strong>Our SaaS, AWS, Stripe</strong></td></tr>
+    <tr><td>Subcontractor</td><td>BA's downstream vendor</td><td>Sentry, Datadog</td></tr>
+  </table>
+  <span class=slide-num>04</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 5 — PHI 18 identifiers -->
+<section class=slide>
+  <h1>What counts as PHI — Safe Harbor 18 identifiers</h1>
+  <p class=muted>Strip ALL 18 + health context → no longer PHI → de-identified data, far less regulation. <code>45 CFR § 164.514(b)(2)</code></p>
+  <div class=grid-2 style="margin-top:4mm">
+    <ol class="bullet-tight q-list">
+      <li>Names</li>
+      <li>Geographic info smaller than state (street, city, ZIP)</li>
+      <li>Dates except year (DOB, admit, discharge, death)</li>
+      <li>Phone numbers</li>
+      <li>Fax numbers</li>
+      <li>Email addresses</li>
+      <li>SSN</li>
+      <li>Medical record numbers (MRN)</li>
+      <li>Health plan / insurance numbers</li>
+    </ol>
+    <ol start=10 class="bullet-tight q-list">
+      <li>Account numbers</li>
+      <li>License / certificate numbers</li>
+      <li>Vehicle IDs (plate, VIN)</li>
+      <li>Device serial numbers</li>
+      <li>Web URLs identifying individuals</li>
+      <li>IP addresses</li>
+      <li>Biometric IDs (fingerprint, voice, retina)</li>
+      <li>Full-face photographs</li>
+      <li>Any other unique identifying code</li>
+    </ol>
+  </div>
+  <div class="card warn" style="margin-top:5mm">
+    <h3>Where this bites in our code</h3>
+    <p>If any of these 18 + health info ends up in <strong>logs, URLs, push notifications, analytics, error trackers, or screenshots</strong> — we have a disclosure event. Phase 1 of the skill scans for exactly these patterns.</p>
+  </div>
+  <span class=slide-num>05</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 6 — What we built -->
+<section class="slide section-divider">
+  <h1>What we built</h1>
+  <div class=sub>A Claude Code skill that audits any project in 3 phases</div>
+  <span class=slide-num>06</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 7 — Overview -->
+<section class=slide>
+  <h1>Overview</h1>
+  <div class=grid-2>
+    <div>
+      <h3>The problem</h3>
+      <ul>
+        <li>HIPAA audits cost $50k–$300k and take 3–9 months</li>
+        <li>Engineers don't know what auditors actually check</li>
+        <li>By the time auditor finds gaps, fixing them blocks launch</li>
+        <li>Healthcare clients ask for HIPAA story up-front in pre-sales</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What our skill does</h3>
+      <ul>
+        <li>Runs a deterministic scanner over code + infra + deps in &lt; 30 sec</li>
+        <li>Then drives a structured 45-question interview for policy + process gaps</li>
+        <li>Produces a scored verdict + remediation roadmap</li>
+        <li>Generates HTML dashboard inside the audited project</li>
+      </ul>
+    </div>
+  </div>
+  <div class="kpi-row">
+    <div class=kpi><div class=val>24</div><div class=lbl>baseline rules</div></div>
+    <div class=kpi><div class=val>45+</div><div class=lbl>interview questions</div></div>
+    <div class=kpi><div class=val>12</div><div class=lbl>categories</div></div>
+    <div class=kpi><div class=val>0</div><div class=lbl>python deps</div></div>
+    <div class=kpi><div class=val>62%</div><div class=lbl>HIPAA coverage</div></div>
+  </div>
+  <span class=slide-num>07</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 8 — 3-phase architecture -->
+<section class=slide>
+  <h1>Three-phase architecture</h1>
+  <div class=flow>
+    <div class=step>
+      <h3>Phase 1 — Auto-scan</h3>
+      <p style="font-size:10pt">~30 seconds, deterministic</p>
+      <ul class=bullet-tight>
+        <li>Source code regex scan</li>
+        <li>Infra config (Docker, TF, yaml)</li>
+        <li>Dependency BAA classifier</li>
+        <li>24 rules → initial score</li>
+      </ul>
+    </div>
+    <div class=arrow>→</div>
+    <div class=step>
+      <h3>Phase 2 — Interview</h3>
+      <p style="font-size:10pt">~30–45 min, pausable</p>
+      <ul class=bullet-tight>
+        <li>Claude asks 3–5 Q's per turn</li>
+        <li>BAAs, policies, training</li>
+        <li>Risk analysis, IR runbook</li>
+        <li>Patient rights, DR, mobile</li>
+      </ul>
+    </div>
+    <div class=arrow>→</div>
+    <div class=step>
+      <h3>Phase 3 — Merge</h3>
+      <p style="font-size:10pt">Final scored report</p>
+      <ul class=bullet-tight>
+        <li>Combined verdict</li>
+        <li>Per-category scores 0–100</li>
+        <li>HTML dashboard</li>
+        <li>Remediation roadmap</li>
+      </ul>
+    </div>
+  </div>
+  <h3 style="margin-top:8mm">Why three phases?</h3>
+  <p>Code scan alone catches ~12% of HIPAA obligations. The other ~50% lives in policies, BAAs, training records, runtime evidence — invisible to a regex. Interview captures it via structured Q&amp;A. Combined coverage: ~62%.</p>
+  <span class=slide-num>08</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 9 — Phase 1 detail -->
+<section class=slide>
+  <h1>Phase 1 — what the auto-scan catches</h1>
+  <div class=grid-2>
+    <div>
+      <h3>Source code patterns</h3>
+      <ul class=bullet-tight>
+        <li>PHI identifier patterns inside log statements (SSN, email, phone, MRN, DOB)</li>
+        <li>PHI in URL construction</li>
+        <li>Hardcoded API keys / tokens / passwords</li>
+        <li>Plaintext <code>http://</code> URLs</li>
+        <li>Disabled TLS verification (<code>verify=False</code>, <code>rejectUnauthorized:&nbsp;false</code>)</li>
+        <li>Wildcard CORS (<code>*</code>)</li>
+        <li>Missing session timeout / auto-logoff</li>
+        <li>Audit log scaffolding present?</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Infrastructure config</h3>
+      <ul class=bullet-tight>
+        <li>DB encryption at rest (RDS, MongoDB, Firestore)</li>
+        <li>S3 / object storage default encryption</li>
+        <li>Backup encryption</li>
+        <li>TLS minimum version (1.2+)</li>
+        <li>HSTS header configuration</li>
+        <li>Public bucket misconfiguration</li>
+        <li>Log retention policy hints</li>
+        <li><code>.env</code> file committed to repo</li>
+      </ul>
+      <h3>Dependency classification</h3>
+      <ul class=bullet-tight>
+        <li>Vendors that <strong>refuse BAA</strong> (GA4, Meta Pixel, Mailchimp)</li>
+        <li>Vendors needing <strong>Enterprise tier</strong> for BAA (Sentry, Datadog, Vercel)</li>
+        <li>Vendors with <strong>signable BAA</strong> (AWS, Stripe, Twilio)</li>
+      </ul>
+    </div>
+  </div>
+  <span class=slide-num>09</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 10 — Phase 2 detail -->
+<section class=slide>
+  <h1>Phase 2 — the off-code interview</h1>
+  <p>Claude reads <code>docs/interview.json</code>, walks you through 12 sections, asks 3–5 questions per turn, saves answers after each batch. Resumable.</p>
+  <div class=grid-3 style="margin-top:5mm">
+    <div>
+      <h3>1. BAAs</h3>
+      <ul class=bullet-tight><li>CE BAAs</li><li>Subprocessor BAAs</li><li>Review cadence</li></ul>
+      <h3>2. Risk Analysis</h3>
+      <ul class=bullet-tight><li>NIST 800-30 doc</li><li>Last review date</li><li>Mitigation plan</li></ul>
+      <h3>3. Workforce</h3>
+      <ul class=bullet-tight><li>Annual training</li><li>Sanction policy</li><li>Privacy/Security Officers</li><li>Termination procedure</li></ul>
+      <h3>4. Access Reviews</h3>
+      <ul class=bullet-tight><li>Review cadence</li><li>MFA enforced</li><li>No shared accounts</li></ul>
+    </div>
+    <div>
+      <h3>5. Audit Logs</h3>
+      <ul class=bullet-tight><li>PHI read logged</li><li>Immutable storage</li><li>6yr retention</li><li>Review cadence</li></ul>
+      <h3>6. Encryption (runtime)</h3>
+      <ul class=bullet-tight><li>Cloud-console verified</li><li>Backup restore tested</li><li>KMS key mgmt</li><li>External TLS scanned</li></ul>
+      <h3>7. Incident Response</h3>
+      <ul class=bullet-tight><li>Runbook exists</li><li>Tabletop tested</li><li>Breach log kept</li><li>Notification template</li></ul>
+      <h3>8. Physical</h3>
+      <ul class=bullet-tight><li>Facility policy</li><li>Device disposal (NIST 800-88)</li><li>Workstation security</li></ul>
+    </div>
+    <div>
+      <h3>9. Disaster Recovery</h3>
+      <ul class=bullet-tight><li>DR plan w/ RTO/RPO</li><li>Last DR test</li><li>Backup offsite</li></ul>
+      <h3>10. De-identification</h3>
+      <ul class=bullet-tight><li>Prod-only PHI</li><li>De-id method</li><li>Re-id test attempted</li></ul>
+      <h3>11. Patient Rights</h3>
+      <ul class=bullet-tight><li>NPP published</li><li>Access requests</li><li>Amendments</li><li>Accounting of disclosures</li><li>Minimum necessary</li></ul>
+      <h3>12. Mobile-specific</h3>
+      <ul class=bullet-tight><li>Cert pinning</li><li>Biometric lock</li><li>Screenshot block</li><li>No PHI in push</li><li>Keychain tokens</li></ul>
+    </div>
+  </div>
+  <span class=slide-num>10</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 11 — Phase 3 detail -->
+<section class=slide>
+  <h1>Phase 3 — merge &amp; final report</h1>
+  <div class=grid-2>
+    <div>
+      <h3>What happens</h3>
+      <ul>
+        <li>Interview answers converted to findings</li>
+        <li>Yes → pass, No / partial → fail, Unknown → manual</li>
+        <li>Date answers older than 12 months → fail (stale)</li>
+        <li>All findings re-scored together</li>
+        <li>Verdict + per-category scores recalculated</li>
+        <li>HTML + MD + JSON re-rendered</li>
+        <li>Reports auto-copied into project root</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What Claude does next</h3>
+      <ul>
+        <li>Walks you through top 5 MUST-fix items</li>
+        <li>Proposes owners + deadlines</li>
+        <li>Offers to draft skeleton policy docs you're missing</li>
+        <li>Offers to create Jira/Linear tickets for each remediation</li>
+        <li>Schedules a follow-up audit after fixes</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card good" style="margin-top:6mm">
+    <h3>Real test on sms-frontend (internal project)</h3>
+    <table style="margin-top:2mm">
+      <tr><th>Stage</th><th>Rules</th><th>Score</th><th>Verdict</th></tr>
+      <tr><td>Phase 1 only</td><td>24</td><td>68/100</td><td>Not Compliant (4 false positives identified)</td></tr>
+      <tr><td>Phase 1 + 2</td><td>47</td><td>~50/100 expected</td><td>Reveals real process gaps (risk analysis, IR runbook, BAA chain)</td></tr>
+    </table>
+  </div>
+  <span class=slide-num>11</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 12 — Output samples -->
+<section class=slide>
+  <h1>Output — what the team sees</h1>
+  <div class=grid-2>
+    <div>
+      <h3>HTML dashboard (auto-opens in browser)</h3>
+      <ul class=bullet-tight>
+        <li>Verdict badge + score gauge (color-coded)</li>
+        <li>KPI grid: rules total, MUST/SHOULD fails, manual verify, passing, interview gaps</li>
+        <li>Category bars (12 categories, 0–100 each)</li>
+        <li>Severity distribution chart</li>
+        <li>Vendor BAA risk table</li>
+        <li>Filterable findings table (status / severity / code-vs-interview)</li>
+        <li>Dark-mode aware</li>
+        <li>Self-contained, no JS dependencies</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Markdown report (audit.md)</h3>
+      <ul class=bullet-tight>
+        <li>Executive summary with verdict + score</li>
+        <li>Category bar chart in ASCII</li>
+        <li>Severity summary table</li>
+        <li>Top failing categories</li>
+        <li>MUST-fix detail with evidence + fix hint + citation</li>
+        <li>Remediation roadmap: Week 1 / Sprint 1 / Manual</li>
+      </ul>
+      <h3>JSON (audit.json)</h3>
+      <ul class=bullet-tight>
+        <li>Machine-readable for CI gates</li>
+        <li>Diffable across audits</li>
+        <li>Powers HTML + MD renderers</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:5mm">
+    <p style="margin:0"><strong>File locations:</strong> <code>/tmp/hipaa-audit-&lt;ts&gt;/{facts,audit,audit_final}.{json,md,html}</code> &nbsp;+&nbsp; <code>&lt;project&gt;/hipaa-audit-report.{html,md}</code></p>
+  </div>
+  <span class=slide-num>12</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 13 — Verdict + scoring -->
+<section class=slide>
+  <h1>Verdict + scoring model</h1>
+  <h3>Severity weighting</h3>
+  <table>
+    <tr><th>Severity</th><th>Weight</th><th>Meaning</th></tr>
+    <tr><td><span class="tag must">must</span></td><td>3.0</td><td>Required safeguard or known PHI leak path. Any failure = NOT Compliant.</td></tr>
+    <tr><td><span class="tag should">should</span></td><td>1.5</td><td>Addressable safeguard or strong best practice.</td></tr>
+    <tr><td><span class="tag nice">nice</span></td><td>0.5</td><td>Defense-in-depth, audit-readiness.</td></tr>
+  </table>
+  <h3 style="margin-top:6mm">Category score formula</h3>
+  <pre>score = ((sum of weights for "pass") + 0.5 × (sum of weights for "manual"))
+        ÷ (total weights for all rules in category)
+        × 100</pre>
+  <h3>Verdict thresholds</h3>
+  <table>
+    <tr><th>Verdict</th><th>Condition</th></tr>
+    <tr><td><strong style="color:#b3261e">Not Compliant</strong></td><td>Any <code>must</code> failed OR overall &lt; 60</td></tr>
+    <tr><td><strong style="color:#a86700">Partially Compliant</strong></td><td>No <code>must</code> failed AND overall 60–84</td></tr>
+    <tr><td><strong style="color:#0a7d36">Compliant</strong></td><td>No <code>must</code> failed AND overall ≥ 85 AND no critical category &lt; 70</td></tr>
+  </table>
+  <p class=muted style="margin-top:4mm">Critical categories: encryption-at-rest, encryption-in-transit, access-control, audit-logging, phi-in-logs, secrets-mgmt.</p>
+  <div class="card warn" style="margin-top:4mm">
+    <h3>"Compliant" verdict ≠ legal compliance</h3>
+    <p style="margin:0">It means the automated checks passed. Still need: signed BAAs, third-party audit, policies on file, training records, runtime evidence.</p>
+  </div>
+  <span class=slide-num>13</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 14 — Honest coverage -->
+<section class=slide>
+  <h1>Honest coverage &amp; confidence</h1>
+  <p>We don't oversell. CTO-level numbers:</p>
+  <table>
+    <tr><th>HIPAA bucket</th><th>% of total HIPAA</th><th>Code-only</th><th>+ Interview</th></tr>
+    <tr><td>Technical safeguards</td><td>~25%</td><td>35%</td><td><strong>55%</strong></td></tr>
+    <tr><td>Administrative (policy/training/BAA)</td><td>~40%</td><td>0%</td><td><strong>70%</strong></td></tr>
+    <tr><td>Physical safeguards</td><td>~10%</td><td>0%</td><td>60%</td></tr>
+    <tr><td>Privacy Rule (patient rights)</td><td>~10%</td><td>0%</td><td>70%</td></tr>
+    <tr><td>Breach notification process</td><td>~10%</td><td>0%</td><td>75%</td></tr>
+    <tr><td>Documentation / retention</td><td>~5%</td><td>5%</td><td>70%</td></tr>
+    <tr><th>WEIGHTED TOTAL</th><th>100%</th><th>~12%</th><th><strong>~62%</strong></th></tr>
+  </table>
+  <h3 style="margin-top:6mm">Confidence by goal</h3>
+  <table>
+    <tr><th>Goal</th><th>Confidence</th></tr>
+    <tr><td>Find obvious technical mistakes before they ship</td><td><strong style="color:#0a7d36">90%</strong></td></tr>
+    <tr><td>Drive team conversations about HIPAA gaps</td><td><strong style="color:#0a7d36">85%</strong></td></tr>
+    <tr><td>Pre-audit gap assessment</td><td><strong style="color:#a86700">75%</strong></td></tr>
+    <tr><td>Convince clinical partner you have HIPAA story</td><td><strong style="color:#a86700">75%</strong></td></tr>
+    <tr><td>Replace a HIPAA auditor</td><td><strong style="color:#b3261e">0%</strong></td></tr>
+    <tr><td>Survive OCR investigation alone</td><td><strong style="color:#b3261e">5%</strong></td></tr>
+  </table>
+  <span class=slide-num>14</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 15 — Use cases -->
+<section class=slide>
+  <h1>Use cases for our team</h1>
+  <div class=grid-2>
+    <div class=card>
+      <h3>1. Pre-sales / RFP response</h3>
+      <p>Healthcare client asks: "Are you HIPAA ready?" Run the skill on the candidate project, share the HTML dashboard. Demonstrates we have a process, not just slides.</p>
+    </div>
+    <div class=card>
+      <h3>2. CI gate</h3>
+      <p>Wire Phase 1 into GitHub Actions. Fail build if a MUST rule regresses. Catches accidental hardcoded keys, removed encryption, added blocked vendor.</p>
+    </div>
+    <div class=card>
+      <h3>3. Pre-launch gap assessment</h3>
+      <p>Before clinical go-live, run all 3 phases. Triage findings. Fix critical items in-house, pay auditor only after we're confident.</p>
+    </div>
+    <div class=card>
+      <h3>4. Engineer onboarding</h3>
+      <p>New devs on healthcare projects read the skill docs (HIPAA_RULES_SIMPLE.md, 18_IDENTIFIERS.md, BAA_VENDORS.md). Faster ramp than "read 200-page compliance handbook."</p>
+    </div>
+    <div class=card>
+      <h3>5. Vendor evaluation</h3>
+      <p>Before adding a new SaaS dependency, check BAA_VENDORS.md. Saves cycles arguing whether vendor is acceptable.</p>
+    </div>
+    <div class=card>
+      <h3>6. Quarterly self-audit</h3>
+      <p>Re-run on every active healthcare project quarterly. Diff against previous audit. Track which rules regressed and which improved.</p>
+    </div>
+  </div>
+  <span class=slide-num>15</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 16 — Install + run -->
+<section class=slide>
+  <h1>Install &amp; run</h1>
+  <h3>One-time install (per developer)</h3>
+  <pre>git clone git@github.com:Global-Software-Consulting/hipaa-audit-skill.git ~/hipaa-audit-skill
+bash ~/hipaa-audit-skill/install.sh</pre>
+  <p>Creates symlink at <code>~/.claude/skills/hipaa-audit</code>. Restart Claude Code. Done.</p>
+  <h3>Use it</h3>
+  <pre>In Claude Code, type any of:
+
+  /hipaa-audit /path/to/project
+  hipaa audit /path/to/project
+  is /path/to/project hipaa compliant?
+  phi leak check on /path/to/project</pre>
+  <h3>Or run scanner directly (no Claude)</h3>
+  <pre>bash ~/hipaa-audit-skill/skills/hipaa-audit/scripts/run_audit.sh /path/to/project
+
+# Output dropped here:
+#   /tmp/hipaa-audit-&lt;ts&gt;/audit.html
+#   /tmp/hipaa-audit-&lt;ts&gt;/audit.md
+#   &lt;project&gt;/hipaa-audit-report.html</pre>
+  <h3>Uninstall</h3>
+  <pre>bash ~/hipaa-audit-skill/uninstall.sh</pre>
+  <span class=slide-num>16</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 17 — Roadmap -->
+<section class=slide>
+  <h1>Roadmap — what's next</h1>
+  <h3>P0 — kill false positives (next sprint)</h3>
+  <ul class=bullet-tight>
+    <li><code>.gitignore</code>-aware env scan (don't flag <code>.env.local</code> if already ignored)</li>
+    <li>Allowlist XML namespaces (<code>www.w3.org</code>, <code>schema.org</code>, <code>ogp.me</code>)</li>
+    <li>Hardcoded-secret regex: skip route-path values (<code>'/auth/...'</code>)</li>
+  </ul>
+  <h3>P1 — project-type classifier (sprint 2)</h3>
+  <ul class=bullet-tight>
+    <li>Auto-detect: next-frontend, react-native, django-backend, go-backend, monorepo</li>
+    <li>Apply only relevant rule subset per type (no DB rules on pure frontend)</li>
+    <li>Per-app reports for monorepos</li>
+  </ul>
+  <h3>P2 — framework-aware checks (sprint 3)</h3>
+  <ul class=bullet-tight>
+    <li>Parse <code>next.config.{js,ts}</code> headers() for HSTS, CSP, X-Frame-Options</li>
+    <li>Scan <code>app/layout.tsx</code> + <code>_document.tsx</code> for tracking pixels in <code>&lt;Script&gt;</code></li>
+    <li>Detect Supabase / Firebase RLS / security rule references</li>
+  </ul>
+  <h3>P3 — push coverage above 80%</h3>
+  <ul class=bullet-tight>
+    <li>SAST integration: Semgrep healthcare ruleset</li>
+    <li>Runtime cloud audit: Prowler / Steampipe</li>
+    <li>Evidence-path verification (check file paths from interview answers resolve)</li>
+    <li>SSL Labs API auto-call for external TLS scan</li>
+    <li>Container scan: Trivy / Grype</li>
+  </ul>
+  <p class=muted style="margin-top:4mm">Estimated impact: 62% → ~85% coverage, confidence on "compliant" verdict 35% → ~65%.</p>
+  <span class=slide-num>17</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 18 — References -->
+<section class=slide>
+  <h1>References &amp; citations</h1>
+  <h3>Authoritative sources every rule cites</h3>
+  <table>
+    <tr><th>Source</th><th>What it covers</th></tr>
+    <tr><td>HHS Security Rule</td><td>hhs.gov/hipaa/for-professionals/security/laws-regulations</td></tr>
+    <tr><td>HHS Privacy Rule</td><td>hhs.gov/hipaa/for-professionals/privacy/laws-regulations</td></tr>
+    <tr><td>HHS Breach Notification Rule</td><td>hhs.gov/hipaa/for-professionals/breach-notification</td></tr>
+    <tr><td>NIST 800-66 Rev 2 (Feb 2024)</td><td>HIPAA implementation guide</td></tr>
+    <tr><td>NIST 800-30 Rev 1</td><td>Risk assessment methodology</td></tr>
+    <tr><td>NIST 800-88 Rev 1</td><td>Media sanitization</td></tr>
+    <tr><td>NIST 800-52 Rev 2</td><td>TLS configuration</td></tr>
+    <tr><td>OCR Audit Protocol</td><td>The 180+ control checklist OCR actually uses</td></tr>
+    <tr><td>45 CFR Part 164</td><td>The actual federal regulation</td></tr>
+    <tr><td>HHS Tracking Tech Bulletin (2024)</td><td>GA4 / Meta Pixel on patient pages</td></tr>
+  </table>
+  <h3 style="margin-top:6mm">Internal repository</h3>
+  <p><code>github.com/Global-Software-Consulting/hipaa-audit-skill</code></p>
+  <h3>Acknowledgments</h3>
+  <p style="font-size:10pt">Built on patterns documented by HHS OCR audit findings, NIST cybersecurity framework, OWASP secure-headers and input-validation guidance, and open-source HIPAA reference checklists.</p>
+  <span class=slide-num>18</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+<!-- SLIDE 19 — Final / Q&A -->
+<section class="slide cover">
+  <span class=badge>End of Deck</span>
+  <div style="margin-top:auto;margin-bottom:auto;">
+    <h1>Questions?</h1>
+    <div class=sub style="margin-top:6mm">
+      Live demo available on any project path.<br>
+      Roadmap items prioritizable by lead direction.
+    </div>
+  </div>
+  <div class=footer>
+    Repo: github.com/Global-Software-Consulting/hipaa-audit-skill<br>
+    Skill author: Afzal · 2026-06-23
+  </div>
+  <span class=slide-num>19</span>
+  <span class=slide-brand>HIPAA Audit Skill</span>
+</section>
+
+</body>
+</html>
